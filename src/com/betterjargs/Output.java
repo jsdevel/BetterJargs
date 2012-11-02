@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Joseph Spencer
+ * Copyright 2012 Joseph Spencer.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package betterjargs;
+
+package com.betterjargs;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author Joseph Spencer
  */
-public class BetterJargs {
+public class Output {
+   private ArrayList<Object> items = new ArrayList(); 
 
-   /**
-    * @param args the command line arguments
-    */
-   public static void main(String[] args) {
-      // TODO code application logic here
+   public Output add(Object object){
+      items.add(object);
+      return this;
+   }
+
+   @Override
+   public String toString(){
+      StringBuilder builder = new StringBuilder();
+      for(Object item:items){
+         builder.append(item.toString());
+      }
+      return builder.toString();
    }
 }
