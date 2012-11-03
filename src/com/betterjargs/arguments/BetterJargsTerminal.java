@@ -2,12 +2,12 @@ package com.betterjargs.arguments;
 
 import java.io.File;
 
-public class BetterJargsArgumentsTerminal {
+public class BetterJargsTerminal {
 
    private File inputxml;
    private File outputdirectory;
 
-   public BetterJargsArgumentsTerminal(String[] args) throws IllegalArgumentException {
+   public BetterJargsTerminal(String[] args) throws IllegalArgumentException {
       super();
       int len = args.length;
       int i=0;

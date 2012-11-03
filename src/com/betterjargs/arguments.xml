@@ -17,7 +17,7 @@ limitations under the License.
 
 
 <arguments 
-   class="BetterJargsArguments" 
+   class="BetterJargs" 
    indent="   "
    menulength="80"
    package="com.betterjargs.arguments" 

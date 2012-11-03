@@ -38,7 +38,7 @@ public class BetterJargs {
     */
    public static void main(String[] args) {
       try {
-         BetterJargsArgumentsTerminal validatedArgs = new BetterJargsArgumentsTerminal(args);
+         BetterJargsTerminal validatedArgs = new BetterJargsTerminal(args);
 
          ArgumentsElement arguments = getArgumentsElement(validatedArgs.getInputxml());
 
