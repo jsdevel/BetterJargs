@@ -6,27 +6,27 @@ BetterJargs will output .java files to handle incoming arguments to your jar fil
 The following is an example xml file that is used to generate a terminal arguments validation class:
 
 <pre>
-<arguments 
+&lt;arguments 
    class="BetterJargsArguments" 
    indent="   "
    menulength="80"
    package="com.betterjargs.arguments" 
    terminal="true"
->
-   <argument 
+&gt;
+   &lt;argument 
       name="--input-xml" 
       description="The xml file that describes the input arguments." 
       overwrite="true"
       required="true"
-      type="file"/>    
+      type="file"/&gt;    
 
-   <argument 
+   &lt;argument 
       name="--output-directory" 
       description="The directory to output the built files." 
       overwrite="true"
       required="true"
-      type="directory"/>    
-</arguments>
+      type="directory"/&gt;    
+&lt;/arguments&gt;
 </pre>
 
 If you navigate to the package here on github, you will see the output from BetterJargs.
