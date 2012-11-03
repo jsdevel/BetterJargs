@@ -17,61 +17,92 @@ package com.betterjargs;
 
 import com.betterjargs.actions.XMLEventStrategy;
 import com.betterjargs.actions.*;
-import java.io.*;
-import javax.xml.parsers.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import javax.xml.stream.*;
-import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import org.xml.sax.*;
 
 /**
  *
  * @author Joseph Spencer
  */
 public class BetterJargs {
+   private static String userDir = System.getProperty("user.dir");
 
    /**
     * @param args the command line arguments
     */
-   public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, XMLStreamException, FileNotFoundException, Exception {
+   public static void main(String[] args) {
       String pathToXml = MainUtil.getPathToUse(args[0]);
-      Output parseXml = parseXml(pathToXml);
-      out(parseXml.toString());
+      ArgumentsElement arguments = getArgumentsElement(pathToXml);
+
+      if(arguments.getTerminal()){
+         TerminalClassBuilder.buildTerminalArguments(arguments);
+      }
    }
 
-   public static Output parseXml(String pathToXml) throws FileNotFoundException, XMLStreamException, Exception{
+   public static ArgumentsElement getArgumentsElement(String pathToXml) {
       File xmlFile = new File(pathToXml);
+      ArgumentsElement arguments = new ArgumentsElement();
 
       XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-      InputStream in = new FileInputStream(xmlFile);
-      XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 
-      Output programOutput = new Output();
-      XMLEventStrategy currentStrategy = new Arguments(null, programOutput);
+      try {
+         InputStream in = new FileInputStream(xmlFile);
+         XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 
-      while(eventReader.hasNext()){
-         XMLEvent event = eventReader.nextEvent();
+         XMLEventStrategy currentStrategy = new Arguments(null, arguments);
 
-         if(event.isStartElement()){
-            currentStrategy=currentStrategy.handleElement(event);
-         }
-         if(event.isCharacters()){
-            if(!event.asCharacters().getData().matches("^\\s++$")) {
-               throw new Exception("Text nodes are not allowed.");
+         while(eventReader.hasNext()){
+            XMLEvent event = eventReader.nextEvent();
+
+            if(event.isStartElement()){
+               currentStrategy=currentStrategy.handleElement(event);
+            }
+            if(event.isCharacters()){
+               if(!event.asCharacters().getData().matches("^\\s++$")) {
+                  throw new Exception("Text nodes are not allowed.");
+               }
+            }
+            if(event.isEndElement()){
+               currentStrategy=currentStrategy.getPrevious();
+            }
+            if(event.isEndDocument()){
+               currentStrategy.close(event);
             }
          }
-         if(event.isEndElement()){
-            currentStrategy=currentStrategy.getPrevious();
-         }
-         if(event.isEndDocument()){
-            currentStrategy.close(event);
-         }
+      } catch(Exception exc){
+         out(exc.getMessage());
+         System.exit(1);
       }
 
-      return programOutput;
+      return arguments;
    }
 
    public static void out(String msg){
       System.out.println(msg);
+   }
+
+   public static String getPathMethod(String indent){
+      String si=indent;
+      String di=indent+indent;
+      String ti=di+indent;
+
+      return 
+      si+"public String getPathToUse(String path){\n"+
+         di+"String pathToUse;\n"+
+         di+"if(path.startsWith(\"/\")){\n"+
+            ti+"pathToUse = path;\n"+
+         di+"} else {\n"+
+            ti+"pathToUse = System.getProperty(\"user.dir\")+\"/\"+path;\n"+
+         di+"}\n"+
+         di+"return pathToUse;\n"+
+      si+"}\n";
    }
 }

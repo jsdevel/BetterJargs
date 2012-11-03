@@ -24,11 +24,11 @@ import javax.xml.stream.events.*;
  * @author Joseph Spencer
  */
 public class Argument extends XMLEventStrategy {
-   private Output fieldOutput;
    private boolean isOpen;
-
-   public Argument(XMLEventStrategy previous, Output output) {
+   private ArgumentElement element;
+   public Argument(XMLEventStrategy previous, ArgumentElement element) {
       super(previous, "argument");
+      this.element = element;
    }
 
    @Override
@@ -49,6 +49,20 @@ public class Argument extends XMLEventStrategy {
 
    @Override
    public void handleAttribute(String name, String value) throws Exception {
+      switch(name) {
+      case "name":
+         element.setName(value);
+         break;
+      case "description":
+         element.setDescription(value);
+         break;
+      case "type":
+         element.setType(value);
+         break;
+      default:
+         BetterJargs.out("Ignoring unknown attribute '"+name+"' on argument.");
+         break;
+      }
    }
 
 }

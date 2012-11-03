@@ -16,26 +16,34 @@
 
 package com.betterjargs;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author Joseph Spencer
  */
-public class Output {
-   protected ArrayList<Object> items = new ArrayList(); 
+public class ImportOutput extends Output {
+   private Set<String> imports = new HashSet(Arrays.asList(new String[]{}));
+   public ImportOutput add(String type){
+      if(!imports.contains(type)){
+         imports.add(type);
 
-   public Output add(Object object){
-      items.add(object);
+         String path=type;
+         if(importTable.containsKey(type)){
+            path=importTable.get(type);
+         }
+
+         items.add("import "+path+";\n\n");
+      }
       return this;
    }
 
-   @Override
-   public String toString(){
-      StringBuilder builder = new StringBuilder();
-      for(Object item:items){
-         builder.append(item.toString());
-      }
-      return builder.toString();
+   private static Map<String, String> importTable = new HashMap<String, String>();
+   static {
+      importTable.put("File", "java.io.File");
    }
 }

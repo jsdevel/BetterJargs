@@ -26,21 +26,15 @@ import javax.xml.stream.events.*;
  * @author Joseph Spencer
  */
 public class Arguments extends XMLEventStrategy {
-   private Output programOutput;
+   private ArgumentsElement arguments;
 
-   public Arguments(XMLEventStrategy previous, Output output) {
+   public Arguments(XMLEventStrategy previous, ArgumentsElement arguments) {
       super(previous, "arguments");
-      programOutput=output;
+      this.arguments=arguments;
+      //programOutput=output;
    }
 
    private boolean programStarted;
-
-   private Output packageOutput = new Output();
-   private Output privateFieldOutput = new Output();
-   private Output classOutput = new Output();
-   private Output constructorOutput = new Output();
-
-   private boolean isClassNameSupplied;
 
 
 
@@ -49,30 +43,24 @@ public class Arguments extends XMLEventStrategy {
 
       if(!programStarted){
          programStarted=true;
-         programOutput.
-            add(packageOutput).
-            add("public class ").
-               add(classOutput).
-            add(" {\n\n").
-               add(privateFieldOutput).
-            add("}");
+
 
          handleAttributes(event);
 
-         //placing this here so indent may be initialized.
-         privateFieldOutput.
-            add(indent+"private final Map<String, Argument> arguments = new HashMap<String, Argument>();\n\n").
-            add(indent+"public ").add(classOutput).add("(){\n\n").
-               add(constructorOutput).add(indent+"}\n\n");
+         return this;
 
       }
-      Argument newAction = new Argument(this, constructorOutput);
-      return newAction;
+      ArgumentElement argument = new ArgumentElement();
+      arguments.addArgument(argument);
+
+      Argument newAction = new Argument(this, argument);
+
+      return newAction.handleElement(event);
    }
 
    @Override
    public void close(XMLEvent event) throws Exception {
-      if(!isClassNameSupplied){
+      if(arguments.getClassName() == null){
          throw new Exception("You must provide a class name via the 'class' attribute on the arguments element.");
       }
    }
@@ -81,17 +69,19 @@ public class Arguments extends XMLEventStrategy {
    public void handleAttribute(String name, String value) throws Exception {
       switch(name) {
       case "menulength":
-         privateFieldOutput.add(indent+"private int menulength="+value+";\n\n");
+         arguments.setMenuLength(value);
          break;
       case "package":
-         packageOutput.add("package "+value+";\n\n");
+         arguments.setPackage(value);
          break;
       case "indent":
-         indent=value;
+         arguments.setIndnet(value);
          break;
       case "class":
-         isClassNameSupplied=true;
-         classOutput.add(value);
+         arguments.setClass(value);
+         break;
+      case "terminal":
+         arguments.setTerminal(value);
          break;
       default:
          BetterJargs.out("Ignoring unknown attribute '"+name+"' on arguments.");
