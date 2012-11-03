@@ -1,7 +1,7 @@
 BetterJargs
 ===========
 
-BetterJargs will output .java files to handle incoming arguments to your jar files.  It differs from other tools in that you don't need to include BetterJargs into your project.  All you need to do is define an xml file that represents the arguments that your jar will except, and place the outputted files in your project accordingly.  BetterJargs can create three types of input validation:  terminal, ant, and maven.
+BetterJargs will output .java files to handle incoming arguments to your jar files.  It differs from other tools in that you don't need to include BetterJargs into your project.  All you need to do is define an xml file that represents the arguments that your jar will except, and place the outputted files in your project accordingly.  BetterJargs can generate code for the following environments:  terminal, ant, and maven.
 
 The following is an example xml file that is used to generate a terminal arguments validation class (note the terminal="true" attribute):
 
