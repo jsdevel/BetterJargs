@@ -35,10 +35,5 @@ limitations under the License.
       overwrite="true"
       type="directory"/>    
 
-   
-   <argument 
-      name="--some" 
-      default="true"
-      description="Testing." 
-      type="boolean"/>
+
 </arguments>
