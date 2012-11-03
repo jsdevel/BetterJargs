@@ -24,8 +24,8 @@ import javax.xml.stream.events.*;
  *
  * @author Joseph Spencer
  */
-public abstract class XMLEventStrategy {
-   protected final XMLEventStrategy previousStrategy;
+public abstract class XMLEventAction {
+   protected final XMLEventAction previousStrategy;
    protected final String localName;
    protected String indent="    ";
 
@@ -33,12 +33,12 @@ public abstract class XMLEventStrategy {
    private String[] init = {};
    private Set<String> handledAttributes = new HashSet<>(Arrays.asList(init));
 
-   public XMLEventStrategy(XMLEventStrategy previous, String localName){
+   public XMLEventAction(XMLEventAction previous, String localName){
       this.previousStrategy=previous;
       this.localName=localName;
    }
 
-   public abstract XMLEventStrategy handleElement(XMLEvent event) throws Exception;
+   public abstract XMLEventAction handleElement(XMLEvent event) throws Exception;
    protected abstract void handleAttribute(String name, String value) throws Exception;
 
    public abstract void close(XMLEvent event) throws Exception;
@@ -62,7 +62,7 @@ public abstract class XMLEventStrategy {
          }
    }
 
-   public final XMLEventStrategy getPrevious(){
+   public final XMLEventAction getPrevious(){
       if(previousStrategy!=null){
          return previousStrategy;
       }

@@ -25,10 +25,10 @@ import javax.xml.stream.events.*;
  *
  * @author Joseph Spencer
  */
-public class Arguments extends XMLEventStrategy {
+public class ArgumentsAction extends XMLEventAction {
    private ArgumentsElement arguments;
 
-   public Arguments(XMLEventStrategy previous, ArgumentsElement arguments) {
+   public ArgumentsAction(XMLEventAction previous, ArgumentsElement arguments) {
       super(previous, "arguments");
       this.arguments=arguments;
       //programOutput=output;
@@ -39,7 +39,7 @@ public class Arguments extends XMLEventStrategy {
 
 
    @Override
-   public XMLEventStrategy handleElement(XMLEvent event) throws Exception {
+   public XMLEventAction handleElement(XMLEvent event) throws Exception {
 
       if(!programStarted){
          programStarted=true;
@@ -53,7 +53,7 @@ public class Arguments extends XMLEventStrategy {
       ArgumentElement argument = new ArgumentElement();
       arguments.addArgument(argument);
 
-      Argument newAction = new Argument(this, argument);
+      ArgumentAction newAction = new ArgumentAction(this, argument);
 
       return newAction.handleElement(event);
    }

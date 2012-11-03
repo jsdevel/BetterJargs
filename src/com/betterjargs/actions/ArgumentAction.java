@@ -23,10 +23,10 @@ import javax.xml.stream.events.*;
  *
  * @author Joseph Spencer
  */
-public class Argument extends XMLEventStrategy {
+public class ArgumentAction extends XMLEventAction {
    private boolean isOpen;
    private ArgumentElement element;
-   public Argument(XMLEventStrategy previous, ArgumentElement element) {
+   public ArgumentAction(XMLEventAction previous, ArgumentElement element) {
       super(previous, "argument");
       this.element = element;
    }
@@ -37,7 +37,7 @@ public class Argument extends XMLEventStrategy {
    }
 
    @Override
-   public XMLEventStrategy handleElement(XMLEvent event) throws Exception {
+   public XMLEventAction handleElement(XMLEvent event) throws Exception {
       if(!isOpen){
          isOpen=true;
          handleAttributes(event);

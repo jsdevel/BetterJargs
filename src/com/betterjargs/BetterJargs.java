@@ -15,7 +15,7 @@
  */
 package com.betterjargs;
 
-import com.betterjargs.actions.XMLEventStrategy;
+import com.betterjargs.actions.XMLEventAction;
 import com.betterjargs.actions.*;
 import com.betterjargs.arguments.*;
 import java.io.File;
@@ -64,7 +64,7 @@ public class BetterJargs {
       InputStream in = new FileInputStream(xmlFile);
       XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 
-      XMLEventStrategy currentStrategy = new Arguments(null, arguments);
+      XMLEventAction currentStrategy = new ArgumentsAction(null, arguments);
 
       while(eventReader.hasNext()) {
          XMLEvent event = eventReader.nextEvent();
