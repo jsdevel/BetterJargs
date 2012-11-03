@@ -1,9 +1,9 @@
 BetterJargs
 ===========
 
-BetterJargs will output .java files to handle incoming arguments to your jar files.  It differs from other tools in that you don't need to include BetterJargs into your project.  All you need to do is define an xml file that represents the arguments that your jar will except, and place the outputted files in your project accordingly.
+BetterJargs will output .java files to handle incoming arguments to your jar files.  It differs from other tools in that you don't need to include BetterJargs into your project.  All you need to do is define an xml file that represents the arguments that your jar will except, and place the outputted files in your project accordingly.  BetterJargs can create three types of input validation:  terminal, ant, and maven.
 
-The following is an example xml file that is used to generate a terminal arguments validation class:
+The following is an example xml file that is used to generate a terminal arguments validation class (note the terminal="true" attribute):
 
 <pre>
 &lt;arguments 
@@ -29,4 +29,4 @@ The following is an example xml file that is used to generate a terminal argumen
 &lt;/arguments&gt;
 </pre>
 
-If you navigate to the package here on github, you will see the output from BetterJargs.
+By specifying {code}terminal="true"{/code}, 'Terminal' was appended to the name of the output file.  Similar behavior is applied when {code}ant="true"{/code} or {code}maven="true"{/code} is applied.  If you navigate to the package specified in the sample xml here on github, you will see the output from BetterJargs as 'BetterJargsArgumentsTerminal.java'.
