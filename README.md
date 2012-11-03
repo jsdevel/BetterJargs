@@ -29,4 +29,4 @@ The following is an example xml file that is used to generate a terminal argumen
 &lt;/arguments&gt;
 </pre>
 
-By specifying {code}terminal="true"{/code}, 'Terminal' was appended to the name of the output file.  Similar behavior is applied when {code}ant="true"{/code} or {code}maven="true"{/code} is applied.  If you navigate to the package specified in the sample xml here on github, you will see the output from BetterJargs as 'BetterJargsArgumentsTerminal.java'.
+By specifying `terminal="true"`, 'Terminal' was appended to the name of the output file.  Similar behavior is applied when `ant="true"` or `maven="true"` is applied.  If you navigate to the package specified in the sample xml here on github, you will see the output from BetterJargs as 'BetterJargsArgumentsTerminal.java'.
