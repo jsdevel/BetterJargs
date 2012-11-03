@@ -38,6 +38,12 @@ public class CodeFormatter extends Output {
       indentCount++;
       return this;
    }
+   public CodeFormatter doIndent(){
+      for(int i=0;i<indentCount;i++){
+         add(indent);
+      }
+      return this;
+   }
    public CodeFormatter removeIndent(int amount){
       if(indentCount - amount < 0){
          indentCount = 0;
@@ -53,9 +59,7 @@ public class CodeFormatter extends Output {
       return this;
    }
    public CodeFormatter addLine(String line){
-      for(int i=0;i<indentCount;i++){
-         add(indent);
-      }
+      doIndent();
       add(line);
       addLine();
       return this;
