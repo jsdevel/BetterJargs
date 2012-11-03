@@ -49,8 +49,10 @@ public class BetterJargs {
             new File(validatedArgs.getOutputdirectory().getAbsolutePath() + "/" + arguments.getClassName() + "Terminal.java"), result.toString());
          }
       } catch(Exception exc) {
+         out("\n");
          out("FAILED with the following message:\n");
          out(exc.getMessage());
+         out("\n");
       }
    }
 
