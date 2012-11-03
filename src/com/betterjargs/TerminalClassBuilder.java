@@ -87,7 +87,7 @@ public class TerminalClassBuilder {
          String fieldType = arg.getFieldType();
          String name = arg.getFieldName();
 
-         buildField(privateFieldOutput, fieldType, name);
+         buildField(privateFieldOutput, fieldType, name, arg);
          buildFieldTest(testOutput, arg);
          buildImport(importOutput, arg);
          buildGetMethod(getterOutput, fieldType, name);
@@ -97,8 +97,9 @@ public class TerminalClassBuilder {
 
    }
 
-   public static void buildField(CodeFormatter out, String type, String name){
-         out.addLine("private "+type+" "+name+";");
+   public static void buildField(CodeFormatter out, String type, String name, ArgumentElement arg){
+         String defaultValue = arg.hasDefault() ? "=" + arg.getDefault() : "" ;
+         out.addLine("private "+type+" "+name+ defaultValue+ ";");
    }
 
    public static void buildFieldTest(CodeFormatter out, ArgumentElement arg){

@@ -16,6 +16,7 @@
 
 package com.betterjargs.elements;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +27,18 @@ import java.util.Set;
  */
 public abstract class Element {
    private static Set<String> definedNames = new HashSet(Arrays.asList(new String[]{}));
+   private ArrayList<QueuedAttribute> queuedAttributes = new ArrayList();
+
+   public void addQueuedAttribute(QueuedAttribute queued){
+      queuedAttributes.add(queued);
+   }
+
+   public void flushQueuedAttributes(){
+      for(QueuedAttribute queued: queuedAttributes){
+         queued.handle();
+      }
+      queuedAttributes.clear();
+   }
 
    public final void uniqueName(String name) throws Exception {
       if(definedNames.contains(name)){

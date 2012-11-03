@@ -5,7 +5,6 @@ import java.io.File;
 public class BetterJargsTerminal {
    private File inputxml;
    private File outputdirectory;
-   private boolean some;
 
    public BetterJargsTerminal(String[] args) throws IllegalArgumentException {
       super();
@@ -17,9 +16,6 @@ public class BetterJargsTerminal {
          if("--input-xml".equals(key)){
             String newPath = getPath(val);
             inputxml = new File(newPath);
-            if(inputxml.exists() && !inputxml.canWrite()) {
-               throw new IllegalArgumentException("The following file may not be overwritten to: '"+inputxml+"'.");
-            }
             continue;
          }
          if("--output-directory".equals(key)){
@@ -33,10 +29,6 @@ public class BetterJargsTerminal {
             }
             continue;
          }
-         if("--some".equals(key)){
-            some = getBoolean(val);
-            continue;
-         }
       }
       if(i - len != 0){
          throw new IllegalArgumentException("An even number of arguments must be given.");
@@ -47,9 +39,6 @@ public class BetterJargsTerminal {
    }
    public File getOutputdirectory(){
       return outputdirectory;
-   }
-   public boolean getSome(){
-      return some;
    }
    private String getPath(String path){
       String pathToUse;

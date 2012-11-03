@@ -16,6 +16,7 @@
 
 package com.betterjargs.elements;
 
+import com.betterjargs.*;
 import java.util.*;
 
 /**
@@ -42,12 +43,25 @@ public class ArgumentElement extends Element {
    }
    public String getName(){return name;}
 
-   public void setDefault(String defaultValue) throws Exception {
-      if(defaultValue != null){
-         this.defaultValue=defaultValue;
+   public void setDefault(final String defaultVal) throws Exception {
+      if(defaultVal != null){
+         addQueuedAttribute(new QueuedAttribute() {
+            @Override
+            public void handle() {
+               if(type != null){
+                  switch(type){
+                  case "boolean":
+                     if(getBoolean(defaultVal)){
+                        defaultValue = "true";
+                     }
+                  }
+               }
+            }
+         });
       }
    }
    public String getDefault(){return defaultValue;}
+   public boolean hasDefault(){return defaultValue != null;}
 
    public void setDescription(String description) throws Exception {
       empty(description);
