@@ -35,7 +35,7 @@ public class ArgumentAction extends XMLEventAction {
    @Override
    public void close(XMLEvent event) throws Exception {
       element.flushQueuedAttributes();
-      BetterJargs.out("Closing Argument");
+      //BetterJargs.out("Closing Argument");
    }
 
    @Override

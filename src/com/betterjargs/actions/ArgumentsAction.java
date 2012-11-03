@@ -65,7 +65,7 @@ public class ArgumentsAction extends XMLEventAction {
       if(arguments.getClassName() == null){
          throw new Exception("You must provide a class name via the 'class' attribute on the arguments element.");
       }
-      BetterJargs.out("Closing Arguments.");
+      //BetterJargs.out("Closing Arguments.");
    }
 
    @Override
