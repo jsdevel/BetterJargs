@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betterjargs;
+package com.betterjargs.elements;
 
 import java.util.Arrays;
 import java.util.HashSet;

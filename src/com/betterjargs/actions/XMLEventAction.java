@@ -16,7 +16,7 @@
 package com.betterjargs.actions;
 
 import com.betterjargs.BetterJargs;
-import com.betterjargs.Output;
+import com.betterjargs.output.Output;
 import java.util.*;
 import javax.xml.stream.events.*;
 

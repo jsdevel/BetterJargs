@@ -16,6 +16,7 @@
 
 package com.betterjargs.actions;
 
+import com.betterjargs.elements.ArgumentElement;
 import com.betterjargs.*;
 import javax.xml.stream.events.*;
 
@@ -54,7 +55,7 @@ public class ArgumentAction extends XMLEventAction {
          element.setName(value);
          break;
       case "default":
-         //element.setDescription(value);
+         element.setDefault(value);
          break;
       case "description":
          element.setDescription(value);

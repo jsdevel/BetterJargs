@@ -15,6 +15,8 @@
  */
 package com.betterjargs;
 
+import com.betterjargs.output.CodeFormatter;
+import com.betterjargs.elements.ArgumentsElement;
 import com.betterjargs.actions.XMLEventAction;
 import com.betterjargs.actions.*;
 import com.betterjargs.arguments.*;

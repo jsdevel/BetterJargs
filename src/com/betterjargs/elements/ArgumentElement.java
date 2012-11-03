@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betterjargs;
+package com.betterjargs.elements;
 
 import java.util.*;
 
@@ -25,6 +25,7 @@ import java.util.*;
 public class ArgumentElement extends Element {
 
    private String name;
+   private String defaultValue;
    private String description="";
    private String type;
    private String fieldName;
@@ -40,6 +41,13 @@ public class ArgumentElement extends Element {
       this.fieldName = name.toLowerCase().replaceAll("[^a-z]", "");
    }
    public String getName(){return name;}
+
+   public void setDefault(String defaultValue) throws Exception {
+      if(defaultValue != null){
+         this.defaultValue=defaultValue;
+      }
+   }
+   public String getDefault(){return defaultValue;}
 
    public void setDescription(String description) throws Exception {
       empty(description);

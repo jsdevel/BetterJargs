@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betterjargs;
+package com.betterjargs.output;
 
 import java.util.Arrays;
 import java.util.HashMap;
