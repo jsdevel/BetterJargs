@@ -27,13 +27,12 @@ limitations under the License.
       name="--input-xml" 
       description="The xml file that describes the input arguments." 
       overwrite="true"
-      required="true"
       type="file"/>    
 
    <argument 
       name="--output-directory" 
       description="The directory to output the built files." 
       overwrite="true"
-      required="true"
       type="directory"/>    
+
 </arguments>

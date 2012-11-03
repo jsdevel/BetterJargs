@@ -16,8 +16,8 @@
 
 package com.betterjargs;
 
-import java.io.*;
-import java.util.*;
+import java.util.Iterator;
+
 
 /**
  *
@@ -31,13 +31,12 @@ public class TerminalClassBuilder {
       String indent = arguments.getIndent();
       String className = arguments.getClassName()+"Terminal";
 
-      Output output = new Output();
+      CodeFormatter output = new CodeFormatter(indent);
       ImportOutput importOutput = new ImportOutput();
-      Output privateFieldOutput = new Output();
-      Output loopOutput = new Output();
-      Output testOutput = new Output();
-      Output verifyOutput = new Output();
-      Output getterOutput = new Output();
+      CodeFormatter privateFieldOutput = new CodeFormatter(indent).addIndent(1);
+      CodeFormatter testOutput = new CodeFormatter(indent).addIndent(3);
+      CodeFormatter verifyOutput = new CodeFormatter(indent).addIndent(4);
+      CodeFormatter getterOutput = new CodeFormatter(indent).addIndent(1);
 
       if(!"".equals(arguments.getPackageName())){
          output.add("package ").add(arguments.getPackageName()).add(";\n\n");
@@ -45,150 +44,128 @@ public class TerminalClassBuilder {
 
       output.
          add(importOutput).
-         add("public class ").add(className).add(" {\n\n").
+         
+         addLine("public class "+className+" {").
             add(privateFieldOutput).
-            add("\n").
-            add(indent).
-            add("public ").add(className).add("(String[] args) throws IllegalArgumentException {\n").
-            add(indent).
-            add(indent).
-            add("super();\n").
-            add(loopOutput).
-            add(indent+"}\n\n").
+            addLine().
+            addIndent().
+            addLine("public "+className+"(String[] args) throws IllegalArgumentException {").
+            addIndent().
+               addLine("super();").
+               addLine("int len = args.length;").
+               addLine("int i=0;").
+               addLine("for(;i+1<len;i+=2){").
+               addIndent().
+                  addLine("String key = args[i];").
+                  addLine("String val = args[i+1];").
+               add(testOutput).
+               removeIndent().
+               addLine("}").
+               addLine("if(i - len != 0){").
+               addIndent().
+                  addLine("throw new IllegalArgumentException(\"An even number of arguments must be given.\");").
+               removeIndent().
+               addLine("}").
+               add(verifyOutput).
+               removeIndent().
+            addLine("}").
             add(getterOutput).
-            add(BetterJargs.getPathMethod(indent)).
-         add("}");
+            add(BetterJargs.getPathMethod(indent, 1)).
+            add(BetterJargs.getGetBooleanMethod(indent, 1)).
+            removeIndent().
+         addLine("}");
 
-      buildLoop(loopOutput, indent, testOutput, verifyOutput);
 
       Iterator<ArgumentElement> args = arguments.getArgumentIterator();
       while(args.hasNext()){
          ArgumentElement arg = args.next();
          String fieldType = arg.getFieldType();
-         String type = arg.getType();
          String name = arg.getFieldName();
-         importOutput.add(fieldType);
 
-         buildField(privateFieldOutput, fieldType, indent, name);
-         buildFieldTest(testOutput, arg, indent);
-         buildGetMethod(getterOutput, fieldType, indent, name);
-         buildRequiredFieldValidation(verifyOutput, indent, arg);
+         buildField(privateFieldOutput, fieldType, name);
+         buildFieldTest(testOutput, arg);
+         buildImport(importOutput, arg);
+         buildGetMethod(getterOutput, fieldType, name);
+         buildRequiredFieldValidation(verifyOutput, arg);
       }
       return output;
 
    }
 
-   public static void buildField(Output out, String type, String indent, String name){
-         out.add(indent).
-            add("private "+type+" "+name+";\n");
+   public static void buildField(CodeFormatter out, String type, String name){
+         out.addLine("private "+type+" "+name+";");
    }
 
-   public static void buildFieldTest(Output out, ArgumentElement arg, String indent){
+   public static void buildFieldTest(CodeFormatter out, ArgumentElement arg){
       String fieldType = arg.getFieldType();
       String fieldName = arg.getFieldName();
-      out.
-         add(indent).add(indent).add(indent).
-         add("if(\""+arg.getName()+"\".equals(key)){\n");
 
+      out.addLine("if(\""+arg.getName()+"\".equals(key)){").
+               addIndent();
          switch(arg.getType()){
          case "directory":
          case "file":
-            out.add(indent).add(indent).add(indent).add(indent);
             out.
-               add("String newPath = __getPath(val);\n").
-
-               add(indent).add(indent).add(indent).add(indent).
-               add(fieldName+" = new "+fieldType+"(newPath);\n");
-
+               addLine("String newPath = getPath(val);").
+               addLine(fieldName+" = new "+fieldType+"(newPath);");
                if("directory".equals(arg.getType())){
                   out.
-                  add(indent).add(indent).add(indent).add(indent).
-                  add("if(!"+fieldName+".isDirectory()) {\n").
-                  add(indent).add(indent).add(indent).add(indent).add(indent).
-                  add("throw new IllegalArgumentException(\"Directory doesn't exist :'\"+val+\"'.  Given by argument '\"+key+\"'.\");\n").
-                  add(indent).add(indent).add(indent).add(indent).
-                  add("}\n");
+                  addLine("if(!"+fieldName+".isDirectory()) {").
+                  addIndent().
+                  addLine("throw new IllegalArgumentException(\"Directory doesn't exist :'\"+val+\"'.  Given by argument '\"+key+\"'.\");").
+                  removeIndent().
+                  addLine("}");
 
                }
 
                if(!arg.getOverwrite()){
                   out.
-                  add(indent).add(indent).add(indent).add(indent).
-                  add("if("+fieldName+".exists()) {\n").
-                  add(indent).add(indent).add(indent).add(indent).add(indent).
-                     add("throw new IllegalArgumentException(\"Cannot overwrite existing file.  Specify 'overwrite' in your arguments.xml file.\");\n").
-                  add(indent).add(indent).add(indent).add(indent).
-                  add("}\n");
+                  addLine("if("+fieldName+".exists()) {").
+                  addIndent().
+                     addLine("throw new IllegalArgumentException(\"Cannot overwrite existing file.  Specify 'overwrite' in your arguments.xml file.\");").
+                  removeIndent().
+                  addLine("}");
                }
-
+            break;
+         case "boolean":
+            out.addLine(fieldName+" = getBoolean(val);");
+            break;
          }
 
-      out.
-         add(indent).add(indent).add(indent).add(indent).
-         add("continue;\n").
-         add(indent).add(indent).add(indent).
-         add("}\n");
+      out.addLine("continue;").
+         removeIndent().
+         addLine("}");
    }
 
 
-   public static void buildGetMethod(Output out, String type, String indent, String name){
+   public static void buildGetMethod(CodeFormatter out, String type, String name){
       String firstChar = Character.toString(name.charAt(0));
       out.
-         add(indent).
-         add("public "+type+" get"+name.replaceFirst(firstChar, firstChar.toUpperCase())+"(){\n").
-         add(indent).
-         add(indent).
-         add("return "+name+";\n").
-         add(indent).
-         add("}\n");
+         addLine("public "+type+" get"+name.replaceFirst(firstChar, firstChar.toUpperCase())+"(){").addIndent().
+            addLine("return "+name+";").removeIndent().
+         addLine("}");
    }
-   public static void buildRequiredFieldValidation(Output out, String indent, ArgumentElement arg){
+   public static void buildImport(ImportOutput out, ArgumentElement arg){
+      switch(arg.getType()){
+      case "boolean":
+      case "int":
+      case "integer":
+         return;
+      }
+      out.add(arg.getFieldType());
+   }
+   public static void buildRequiredFieldValidation(CodeFormatter out, ArgumentElement arg){
       if(arg.getRequired()){
          String fieldName = arg.getFieldName();
          String name = arg.getName();
          out.
-         add(indent).add(indent).add(indent).
-         add("if("+fieldName+"==null) {\n").
-         add(indent).add(indent).add(indent).add(indent).
-         add("throw new IllegalArgumentException(\"The following argument is required: '"+name+"'.\");\n").
-         add(indent).add(indent).add(indent).
-         add("}\n");
+         addLine("if("+fieldName+"==null) {").addIndent().
+         addLine("throw new IllegalArgumentException(\"The following argument is required: '"+name+"'.\");").removeIndent().
+         addLine("}");
       }
    }
 
    public static void buildLoop(Output loopOutput, String indent, Output testOutput, Output verifyOutput){
-      loopOutput.
-         add(indent).
-         add(indent).
-         add("int len = args.length;\n").
-         add(indent).
-         add(indent).
-         add("int i=0;\n").
-         add(indent).
-         add(indent).
-         add("for(;i+1<len;i+=2){\n").
-         add(indent).
-         add(indent).
-         add(indent).
-         add("String key = args[i];\n").
-         add(indent).
-         add(indent).
-         add(indent).
-         add("String val = args[i+1];\n").
-         add(testOutput).
-         add(indent).
-         add(indent).
-         add("}\n").
-         add(indent).
-         add(indent).
-         add("if(i - len != 0){\n").
-         add(indent).
-         add(indent).
-         add(indent).
-         add("throw new IllegalArgumentException(\"An even number of arguments must be given.\");\n").
-         add(indent).
-         add(indent).
-         add("}\n").
-         add(verifyOutput);
+
    }
 }

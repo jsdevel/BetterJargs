@@ -78,10 +78,8 @@ public class BetterJargs {
             }
          }
          if(event.isEndElement()) {
-            currentStrategy = currentStrategy.getPrevious();
-         }
-         if(event.isEndDocument()) {
             currentStrategy.close(event);
+            currentStrategy = currentStrategy.getPrevious();
          }
       }
 
@@ -92,19 +90,38 @@ public class BetterJargs {
       System.out.println(msg);
    }
 
-   public static String getPathMethod(String indent) {
-      String si = indent;
-      String di = indent + indent;
-      String ti = di + indent;
+   public static CodeFormatter getPathMethod(String indent, int amount) {
+      CodeFormatter out = new CodeFormatter(indent).addIndent(amount);
 
-      return si + "private String __getPath(String path){\n"
-      + di + "String pathToUse;\n"
-      + di + "if(path.startsWith(\"/\")){\n"
-      + ti + "pathToUse = path;\n"
-      + di + "} else {\n"
-      + ti + "pathToUse = System.getProperty(\"user.dir\")+\"/\"+path;\n"
-      + di + "}\n"
-      + di + "return pathToUse;\n"
-      + si + "}\n";
+      out.
+      addLine("private String getPath(String path){").
+      addIndent().
+      addLine("String pathToUse;").
+      addLine("if(path.startsWith(\"/\")){").
+      addIndent().
+      addLine("pathToUse = path;").
+      removeIndent().
+      addLine("} else {").addIndent().
+         addLine("pathToUse = System.getProperty(\"user.dir\")+\"/\"+path;").removeIndent().
+      addLine("}").
+      addLine("return pathToUse;").removeIndent().
+      addLine("}");
+
+      return out;
+   }
+
+   public static CodeFormatter getGetBooleanMethod(String indent, int amount){
+      CodeFormatter out = new CodeFormatter(indent).addIndent(amount);
+
+      out.addLine("public final boolean getBoolean(String bool){").addIndent().
+         addLine("if(bool != null){").addIndent().
+            addLine("String s = bool.toLowerCase();").
+            addLine("if(\"true\".equals(bool) || \"yes\".equals(bool) || \"1\".equals(bool)){").addIndent().
+               addLine("return true;").removeIndent().
+            addLine("}").removeIndent().
+         addLine("}").
+         addLine("return false;").removeIndent().
+      addLine("}");
+      return out;
    }
 }

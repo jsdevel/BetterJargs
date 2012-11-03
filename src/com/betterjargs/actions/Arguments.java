@@ -63,6 +63,7 @@ public class Arguments extends XMLEventStrategy {
       if(arguments.getClassName() == null){
          throw new Exception("You must provide a class name via the 'class' attribute on the arguments element.");
       }
+      BetterJargs.out("Closing Arguments.");
    }
 
    @Override
