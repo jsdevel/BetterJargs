@@ -16,11 +16,24 @@
 
 package com.betterjargs;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author Joseph Spencer
  */
 public abstract class Element {
+   private static Set<String> definedNames = new HashSet(Arrays.asList(new String[]{}));
+
+   public final void uniqueName(String name) throws Exception {
+      if(definedNames.contains(name)){
+         throw new Exception("Cannot define '"+name+"' more than once.");
+      }
+      definedNames.add(name);
+   }
+
    public final void dup(String name) throws Exception {
       if(name != null){
          throw new Exception(name+" has already been defined.");

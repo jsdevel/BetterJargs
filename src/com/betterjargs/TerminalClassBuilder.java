@@ -25,7 +25,7 @@ import java.util.*;
  */
 public class TerminalClassBuilder {
 
-   public static void buildTerminalArguments(ArgumentsElement arguments){
+   public static Object buildTerminalArguments(ArgumentsElement arguments){
       BetterJargs.out("Building class for terminal.");
 
       String indent = arguments.getIndent();
@@ -49,7 +49,10 @@ public class TerminalClassBuilder {
             add(privateFieldOutput).
             add("\n").
             add(indent).
-            add("public ").add(className).add("(String[] args){\n").
+            add("public ").add(className).add("(String[] args) throws IllegalArgumentException {\n").
+            add(indent).
+            add(indent).
+            add("super();\n").
             add(loopOutput).
             add(indent+"}\n\n").
             add(getterOutput).
@@ -61,32 +64,72 @@ public class TerminalClassBuilder {
       Iterator<ArgumentElement> args = arguments.getArgumentIterator();
       while(args.hasNext()){
          ArgumentElement arg = args.next();
-         String type = arg.getFieldType();
+         String fieldType = arg.getFieldType();
+         String type = arg.getType();
          String name = arg.getFieldName();
+         importOutput.add(fieldType);
 
-         importOutput.add(type);
-
-
-         buildField(privateFieldOutput, type, indent, name);
-         buildGetMethod(getterOutput, type, indent, name);
-
-
+         buildField(privateFieldOutput, fieldType, indent, name);
+         buildFieldTest(testOutput, arg, indent);
+         buildGetMethod(getterOutput, fieldType, indent, name);
+         buildRequiredFieldValidation(verifyOutput, indent, arg);
       }
+      return output;
 
-
-
-
-      try {
-         MainUtil.putString(new File(className+".java"), output.toString());
-      } catch (IOException exc){
-         BetterJargs.out(exc.getMessage());
-      }
    }
 
    public static void buildField(Output out, String type, String indent, String name){
          out.add(indent).
             add("private "+type+" "+name+";\n");
    }
+
+   public static void buildFieldTest(Output out, ArgumentElement arg, String indent){
+      String fieldType = arg.getFieldType();
+      String fieldName = arg.getFieldName();
+      out.
+         add(indent).add(indent).add(indent).
+         add("if(\""+arg.getName()+"\".equals(key)){\n");
+
+         switch(arg.getType()){
+         case "directory":
+         case "file":
+            out.add(indent).add(indent).add(indent).add(indent);
+            out.
+               add("String newPath = __getPath(val);\n").
+
+               add(indent).add(indent).add(indent).add(indent).
+               add(fieldName+" = new "+fieldType+"(newPath);\n");
+
+               if("directory".equals(arg.getType())){
+                  out.
+                  add(indent).add(indent).add(indent).add(indent).
+                  add("if(!"+fieldName+".isDirectory()) {\n").
+                  add(indent).add(indent).add(indent).add(indent).add(indent).
+                  add("throw new IllegalArgumentException(\"Directory doesn't exist :'\"+val+\"'.  Given by argument '\"+key+\"'.\");\n").
+                  add(indent).add(indent).add(indent).add(indent).
+                  add("}\n");
+
+               }
+
+               if(!arg.getOverwrite()){
+                  out.
+                  add(indent).add(indent).add(indent).add(indent).
+                  add("if("+fieldName+".exists()) {\n").
+                  add(indent).add(indent).add(indent).add(indent).add(indent).
+                     add("throw new IllegalArgumentException(\"Cannot overwrite existing file.  Specify 'overwrite' in your arguments.xml file.\");\n").
+                  add(indent).add(indent).add(indent).add(indent).
+                  add("}\n");
+               }
+
+         }
+
+      out.
+         add(indent).add(indent).add(indent).add(indent).
+         add("continue;\n").
+         add(indent).add(indent).add(indent).
+         add("}\n");
+   }
+
 
    public static void buildGetMethod(Output out, String type, String indent, String name){
       String firstChar = Character.toString(name.charAt(0));
@@ -98,6 +141,19 @@ public class TerminalClassBuilder {
          add("return "+name+";\n").
          add(indent).
          add("}\n");
+   }
+   public static void buildRequiredFieldValidation(Output out, String indent, ArgumentElement arg){
+      if(arg.getRequired()){
+         String fieldName = arg.getFieldName();
+         String name = arg.getName();
+         out.
+         add(indent).add(indent).add(indent).
+         add("if("+fieldName+"==null) {\n").
+         add(indent).add(indent).add(indent).add(indent).
+         add("throw new IllegalArgumentException(\"The following argument is required: '"+name+"'.\");\n").
+         add(indent).add(indent).add(indent).
+         add("}\n");
+      }
    }
 
    public static void buildLoop(Output loopOutput, String indent, Output testOutput, Output verifyOutput){
@@ -125,7 +181,7 @@ public class TerminalClassBuilder {
          add("}\n").
          add(indent).
          add(indent).
-         add("if(3 % len > 0){\n").
+         add("if(i - len != 0){\n").
          add(indent).
          add(indent).
          add(indent).

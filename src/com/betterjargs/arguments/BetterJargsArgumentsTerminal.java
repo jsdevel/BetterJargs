@@ -7,7 +7,8 @@ public class BetterJargsArgumentsTerminal {
    private File inputxml;
    private File outputdirectory;
 
-   public BetterJargsArgumentsTerminal(String[] args){
+   public BetterJargsArgumentsTerminal(String[] args) throws IllegalArgumentException {
+      super();
       int len = args.length;
       int i=0;
       for(;i+1<len;i+=2){
@@ -31,10 +32,10 @@ public class BetterJargsArgumentsTerminal {
          throw new IllegalArgumentException("An even number of arguments must be given.");
       }
          if(inputxml==null) {
-            throw new IllegalArgumentException("The following argument is required: 'inputxml'.");
+            throw new IllegalArgumentException("The following argument is required: '--input-xml'.");
          }
          if(outputdirectory==null) {
-            throw new IllegalArgumentException("The following argument is required: 'outputdirectory'.");
+            throw new IllegalArgumentException("The following argument is required: '--output-directory'.");
          }
    }
 

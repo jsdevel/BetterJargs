@@ -56,6 +56,12 @@ public class Argument extends XMLEventStrategy {
       case "description":
          element.setDescription(value);
          break;
+      case "overwrite":
+         element.setOverwrite(value);
+         break;
+      case "required":
+         element.setRequired(value);
+         break;
       case "type":
          element.setType(value);
          break;

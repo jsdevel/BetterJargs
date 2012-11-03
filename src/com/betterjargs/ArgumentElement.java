@@ -16,20 +16,26 @@
 
 package com.betterjargs;
 
+import java.util.*;
+
 /**
  *
  * @author Joseph Spencer
  */
 public class ArgumentElement extends Element {
+
    private String name;
    private String description="";
    private String type;
    private String fieldName;
    private String fieldType;
+   private boolean overwrite;
+   private boolean required;
 
    public void setName(String name) throws Exception {
       dup(this.name);
       empty(name);
+      uniqueName(name);
       this.name=name;
       this.fieldName = name.toLowerCase().replaceAll("[^a-z]", "");
    }
@@ -41,10 +47,21 @@ public class ArgumentElement extends Element {
    }
    public String getDescription(){return description;}
 
+   public void setOverwrite(String type) throws Exception {
+      this.overwrite=getBoolean(type);
+   }
+   public boolean getOverwrite(){return overwrite;}
+
+   public void setRequired(String required) throws Exception {
+      this.required=getBoolean(required);
+   }
+   public boolean getRequired(){return required;}
+
+
    public void setType(String type) throws Exception {
       dup(this.type);
       empty(type);
-      this.type=type;
+      this.type=type.toLowerCase();
       this.fieldType=convertType(type);
    }
    public String getType(){return type;}
