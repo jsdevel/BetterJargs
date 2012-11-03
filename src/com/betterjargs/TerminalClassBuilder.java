@@ -117,12 +117,11 @@ public class TerminalClassBuilder {
                   addLine("}");
 
                }
-
-               if(!arg.getOverwrite()){
+               if(arg.getOverwrite()){
                   out.
-                  addLine("if("+fieldName+".exists()) {").
+                  addLine("if("+fieldName+".exists() && !"+fieldName+".canWrite()) {").
                   addIndent().
-                     addLine("throw new IllegalArgumentException(\"Cannot overwrite existing file.  Specify 'overwrite' in your arguments.xml file.\");").
+                     addLine("throw new IllegalArgumentException(\"The following file may not be overwritten to: '\"+"+fieldName+"+\"'.\");").
                   removeIndent().
                   addLine("}");
                }
