@@ -7,7 +7,7 @@ The following is an example xml file that is used to generate a terminal argumen
 
 <pre>
 &lt;arguments 
-   class="BetterJargsArguments" 
+   class="BetterJargs" 
    indent="   "
    menulength="80"
    package="com.betterjargs.arguments" 
@@ -29,6 +29,6 @@ The following is an example xml file that is used to generate a terminal argumen
 &lt;/arguments&gt;
 </pre>
 
-By specifying `terminal="true"`, 'Terminal' was appended to the name of the output file.  Similar behavior is applied when `ant="true"` or `maven="true"` is applied.  If you navigate to the package specified in the sample xml here on github, you will see the output from BetterJargs as 'BetterJargsArgumentsTerminal.java'.  
+By specifying `terminal="true"`, 'Terminal' was appended to the name of the output file.  Similar behavior is applied when `ant="true"` or `maven="true"` is applied.  If you navigate to the package specified in the sample xml here on github, you will see the output from BetterJargs as 'BetterJargsTerminal.java'.  
 
-To produce 'BetterJargsArgumentsTerminal.java', BetterJargs was run with the following arguments: `--input-xml src/com/betterjargs/arguments.xml --output-directory src/com/betterjargs/arguments`.
+To produce 'BetterJargsTerminal.java', BetterJargs was run with the following arguments: `--input-xml src/com/betterjargs/arguments.xml --output-directory src/com/betterjargs/arguments`.
