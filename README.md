@@ -56,3 +56,50 @@ limitations under the License.
 By specifying `terminal="true"`, 'Terminal' was appended to the name of the output java file.  Similar behavior is applied when `ant="true"` or `maven="true"` is applied.  If you navigate to the package specified in the sample xml here on github, you will see the output from BetterJargs as 'BetterJargsTerminal.java'.  
 
 To produce 'BetterJargsTerminal.java', BetterJargs was run with the following arguments: `--input-xml src/com/betterjargs/arguments.xml --output-directory src/com/betterjargs/arguments`.
+
+Only two elements may appear in an arguments.xml file:
+
+* arguments (root element)
+* argument
+
+# Elements
+## `arguments`
+### Attributes
+
+* `class`  Alpha numberic characters.  This will be the base name of all produced files  I.E. `class="MyClass" terminal="true"` produces `MyClassTerminal.java MyClassHelp.java`.
+
+* `copyright`  Content to appear under the `COPYRIGHT` header in the help menu.
+
+* `description` Content to appear under the `DESCRIPTION` header in the help menu.
+
+* `help`  Value of `true` or `false` (`true` by default).  When enabled, any attempt to run your jar without
+arguments will cause the help menu to display in stdout, and will exit your jar with a 0 status.
+You can disable this by giving `false` as the value.
+
+* `indent`  Spaces to use for indentation, bot in the output files and in the help menu.
+
+* `license` Content to appear under the `LICENSE` header in the help menu.
+
+* `menulength` Integer amount.  This is the length of all paragraphs in the help menu.
+
+* `package`  The name of the package where the output files will reside.
+
+* `title`  Content to appear under the `TITLE` header in the help menu.
+
+* `terminal` Value of `true` or `false` (true by default).  Used to control whether or not a
+terminal file is produced.
+
+## `argument`
+### Attributes
+
+* `name`  The name of a valid argument.  Must be unique.  Required.
+
+* `default` The default value of the argument.  `file` and `directory` are set to null when default is supplied in conjunction with this attribute.
+
+* `description` Content to appear under the argument in the help menu. 
+
+* `required` Value of `true` or `false` (`false` by default).  If set to `true`, then the absence of this argument when your jar is run will result in an Exception being thrown.
+
+* `type` Value of `boolean`, `file`, or `directory` (more to come).  When set to `directory`, a check will be made to ensure that the directory exists.  If it does now exist, then an exception will be thrown.  When set to `boolean`, the following values will be considered true:  `true yes 1`.  All other values will be considered to be false.
+
+* `overwrite`  Value of `true` or `false`.  Ignored when the type is not one of: `directory` or `file`.  When a valid type is used in conjuntion with a value of `true`, then a check will be made to ensure thathe resource may be written to, if not then an exception will be thrown.
