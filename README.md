@@ -55,14 +55,18 @@ limitations under the License.
 
 By specifying `terminal="true"`, 'Terminal' was appended to the name of the output java file.  Similar behavior is applied when `ant="true"` or `maven="true"` is applied.  If you navigate to the package specified in the sample xml here on github, you will see the output from BetterJargs as 'BetterJargsTerminal.java'.  
 
-To produce 'BetterJargsTerminal.java', BetterJargs was run with the following arguments: `--input-xml src/com/betterjargs/arguments.xml --output-directory src/com/betterjargs/arguments`.
-
-Only two elements may appear in an arguments.xml file:
-
-* arguments (root element)
-* argument
+# How to run
+To produce 'BetterJargsTerminal.java', BetterJargs was run with the following arguments: 
+`--input-xml src/com/betterjargs/arguments.xml --output-directory src/com/betterjargs/arguments`.
 
 # Elements
+Only two elements may appear in an arguments.xml file:
+
+* `arguments` (root element)
+* `argument`
+
+
+
 ## `arguments`
 ### Attributes
 
