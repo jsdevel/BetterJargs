@@ -31,10 +31,10 @@ import java.util.Iterator;
 public class TerminalClassBuilder {
 
    public static Object buildTerminalArguments(ArgumentsElement arguments){
-      BetterJargs.out("Building class for terminal.");
-
       String indent = arguments.getIndent();
       String className = arguments.getClassName()+"Terminal";
+
+      BetterJargs.out("Building "+className+".java");
 
       CodeFormatter output = new CodeFormatter(indent);
       ImportOutput importOutput = new ImportOutput();

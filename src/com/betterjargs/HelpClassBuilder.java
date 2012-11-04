@@ -30,6 +30,7 @@ public class HelpClassBuilder {
       CodeFormatter menu = new CodeFormatter(args.getIndent());
       int maxlength = args.getMenuLength();
       String className = args.getClassName() + "Help";
+      BetterJargs.out("Building "+className+".java");
 
       if(args.hasPackage()) {
          out.addLine("package " + args.getPackageName() + ";").addLine();
