@@ -71,20 +71,35 @@ public class ArgumentsAction extends XMLEventAction {
    @Override
    public void handleAttribute(String name, String value) throws Exception {
       switch(name) {
+      case "class":
+         arguments.setClass(value);
+         break;
+      case "copyright":
+         arguments.setCopyright(value);
+         break;
+      case "description":
+         arguments.setDescription(value);
+         break;
+      case "help":
+         arguments.setHelp(value);
+         break;
+      case "indent":
+         arguments.setIndnet(value);
+         break;
+      case "license":
+         arguments.setLicense(value);
+         break;
       case "menulength":
          arguments.setMenuLength(value);
          break;
       case "package":
          arguments.setPackage(value);
          break;
-      case "indent":
-         arguments.setIndnet(value);
-         break;
-      case "class":
-         arguments.setClass(value);
-         break;
       case "terminal":
          arguments.setTerminal(value);
+         break;
+      case "title":
+         arguments.setTitle(value);
          break;
       default:
          BetterJargs.out("Ignoring unknown attribute '"+name+"' on arguments.");

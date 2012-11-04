@@ -33,8 +33,6 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class BetterJargs {
 
-   private static String userDir = System.getProperty("user.dir");
-
    /**
     * @param args the command line arguments
     */
@@ -47,9 +45,10 @@ public class BetterJargs {
          if(arguments.getTerminal()) {
             Object result = TerminalClassBuilder.buildTerminalArguments(arguments);
 
-            MainUtil.putString(
-            new File(validatedArgs.getOutputdirectory().getAbsolutePath() + "/" + arguments.getClassName() + "Terminal.java"), result.toString());
+            MainUtil.putString(new File(validatedArgs.getOutputdirectory().getAbsolutePath() + "/" + arguments.getClassName() + "Terminal.java"), result.toString());
          }
+         MainUtil.putString(new File(validatedArgs.getOutputdirectory().getAbsolutePath() + "/" + arguments.getClassName() + "Help.java"), HelpClassBuilder.buildHelpClass(arguments).toString());
+
       } catch(Exception exc) {
          out("\n");
          out("FAILED with the following message:\n");

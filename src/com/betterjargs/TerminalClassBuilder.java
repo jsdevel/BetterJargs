@@ -57,6 +57,10 @@ public class TerminalClassBuilder {
             addLine("public "+className+"(String[] args) throws IllegalArgumentException {").
             addIndent().
                addLine("super();").
+               addLine("if(__showHelpOnNoArgs && args.length == 0){").addIndent().
+                  addLine("System.out.print("+arguments.getClassName()+"Help.getHelpMenu());").
+                  addLine("System.exit(0);").removeIndent().
+               addLine("}").
                addLine("int len = args.length;").
                addLine("int i=0;").
                addLine("for(;i+1<len;i+=2){").
@@ -80,6 +84,11 @@ public class TerminalClassBuilder {
             removeIndent().
          addLine("}");
 
+      if(arguments.getHelp()){
+         privateFieldOutput.addLine("private boolean __showHelpOnNoArgs=true;");
+      } else {
+         privateFieldOutput.addLine("private boolean __showHelpOnNoArgs;");
+      }
 
       Iterator<ArgumentElement> args = arguments.getArgumentIterator();
       while(args.hasNext()){

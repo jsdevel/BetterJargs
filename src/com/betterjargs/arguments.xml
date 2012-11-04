@@ -18,14 +18,25 @@ limitations under the License.
 
 <arguments 
    class="BetterJargs" 
+   copyright="2012 Joseph Spencer"
+   description="
+      BetterJargs is a code generator for jar argument validation.\n
+
+      It is very easy to use, and allows you to focus on coding
+      the important parts of your program.  asdfasd fa sd f asd fa sdf asd f asd f asd  fa sdf asdf as df asd f sdf.
+      "
+   help="true"
    indent="   "
-   menulength="80"
+   license="http://www.apache.org/licenses/LICENSE-2.0"
+   menulength="60"
    package="com.betterjargs.arguments" 
+   title="BetterJargs"
    terminal="true"
 >
    <argument 
       name="--input-xml" 
       description="The xml file that describes the input arguments." 
+      required="true"
       type="file"/>    
 
    <argument 
@@ -33,6 +44,5 @@ limitations under the License.
       description="The directory to output the built files." 
       overwrite="true"
       type="directory"/>    
-
-
+ 
 </arguments>
