@@ -52,7 +52,7 @@ public class HelpClassBuilder {
       if(args.hasCopyright()){
          menu.
          add("COPYRIGHT\\n").addIndent();
-         formatParagraph(args.getCopyright(), menu, maxlength);
+         formatParagraph("\u00A9 "+args.getCopyright(), menu, maxlength);
          menu.removeIndent();
       }
 
@@ -69,6 +69,14 @@ public class HelpClassBuilder {
          formatParagraph(args.getDescription(), menu, maxlength);
          menu.removeIndent();
       }
+
+      if(args.hasExample()) {
+         menu.
+         add("EXAMPLE\\n").addIndent();
+         formatParagraph(args.getExapmle(), menu, maxlength);
+         menu.removeIndent();
+      }
+
 
       if(args.hasArguments()) {
          CodeFormatter required = new CodeFormatter(args.getIndent()).addIndent(1);

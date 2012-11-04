@@ -80,6 +80,9 @@ public class ArgumentsAction extends XMLEventAction {
       case "description":
          arguments.setDescription(value);
          break;
+      case "example":
+         arguments.setExample(value);
+         break;
       case "help":
          arguments.setHelp(value);
          break;

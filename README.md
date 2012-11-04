@@ -72,9 +72,11 @@ Only two elements may appear in an arguments.xml file:
 
 * `class`  Alpha numberic characters.  This will be the base name of all produced files  I.E. `class="MyClass" terminal="true"` produces `MyClassTerminal.java MyClassHelp.java`.
 
-* `copyright`  Content to appear under the `COPYRIGHT` header in the help menu.
+* `copyright`  Content to appear under the `COPYRIGHT` header in the help menu.  A copyright symbol is automatically prepended to the content.
 
 * `description` Content to appear under the `DESCRIPTION` header in the help menu.
+
+* `example` Content to appear under the `EXAMPLE` header in the help menu.
 
 * `help`  Value of `true` or `false` (`true` by default).  When enabled, any attempt to run your jar without
 arguments will cause the help menu to display in stdout, and will exit your jar with a 0 status.

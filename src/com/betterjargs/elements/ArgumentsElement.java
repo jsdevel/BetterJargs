@@ -27,6 +27,7 @@ public class ArgumentsElement extends Element {
    private String className;
    private String copyright;
    private String description;
+   private String example;
    private boolean help=true;
    private String indent;
    private String license;
@@ -64,6 +65,15 @@ public class ArgumentsElement extends Element {
    }
    public String getDescription(){return description;}
    public boolean hasDescription(){return description!=null;}
+
+   //DESCRIPTION
+   public void setExample(String example) throws Exception {
+      dup(this.example);
+      empty(example);
+      this.example=example;
+   }
+   public String getExapmle(){return example;}
+   public boolean hasExample(){return example!=null;}
 
    //HELP
    public void setHelp(String help) throws Exception {
