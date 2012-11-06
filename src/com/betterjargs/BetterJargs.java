@@ -15,6 +15,10 @@
  */
 package com.betterjargs;
 
+import com.betterjargs.classbuilders.ArgumentsClassBuilder;
+import com.betterjargs.classbuilders.HelpClassBuilder;
+import com.betterjargs.classbuilders.AntTaskBuilder;
+import com.betterjargs.classbuilders.TerminalClassBuilder;
 import com.betterjargs.output.CodeFormatter;
 import com.betterjargs.elements.ArgumentsElement;
 import com.betterjargs.actions.XMLEventAction;
@@ -114,40 +118,5 @@ public class BetterJargs {
 
    public static void out(String msg) {
       System.out.println(msg);
-   }
-
-   public static CodeFormatter getPathMethod(String indent, int amount) {
-      CodeFormatter out = new CodeFormatter(indent).addIndent(amount);
-
-      out.
-      addLine("public static final String getPath(String path){").
-      addIndent().
-      addLine("String pathToUse;").
-      addLine("if(path.startsWith(\"/\")){").
-      addIndent().
-      addLine("pathToUse = path;").
-      removeIndent().
-      addLine("} else {").addIndent().
-         addLine("pathToUse = System.getProperty(\"user.dir\")+\"/\"+path;").removeIndent().
-      addLine("}").
-      addLine("return pathToUse;").removeIndent().
-      addLine("}");
-
-      return out;
-   }
-
-   public static CodeFormatter getGetBooleanMethod(String indent, int amount){
-      CodeFormatter out = new CodeFormatter(indent).addIndent(amount);
-
-      out.addLine("public static final boolean getBoolean(String bool){").addIndent().
-         addLine("if(bool != null){").addIndent().
-            addLine("String s = bool.toLowerCase();").
-            addLine("if(\"true\".equals(bool) || \"yes\".equals(bool) || \"1\".equals(bool)){").addIndent().
-               addLine("return true;").removeIndent().
-            addLine("}").removeIndent().
-         addLine("}").
-         addLine("return false;").removeIndent().
-      addLine("}");
-      return out;
    }
 }

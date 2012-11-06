@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.betterjargs;
+package com.betterjargs.classbuilders;
 
+import com.betterjargs.BetterJargs;
 import com.betterjargs.elements.*;
 import com.betterjargs.output.*;
 import java.util.*;

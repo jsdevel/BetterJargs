@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.betterjargs;
+package com.betterjargs.classbuilders;
 
+import com.betterjargs.BetterJargs;
 import com.betterjargs.output.CodeFormatter;
 import com.betterjargs.output.ImportOutput;
 import com.betterjargs.output.Output;
@@ -80,8 +81,8 @@ public class TerminalClassBuilder {
                removeIndent().
             addLine("}").
             add(getterOutput).
-            add(BetterJargs.getPathMethod(indent, 1)).
-            add(BetterJargs.getGetBooleanMethod(indent, 1)).
+            add(FileBuilderUtilities.getPathMethod(indent, 1)).
+            add(FileBuilderUtilities.getGetBooleanMethod(indent, 1)).
             removeIndent().
          addLine("}");
 
