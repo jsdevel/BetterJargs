@@ -77,4 +77,14 @@ public class AntTaskBuilder {
 
       return output;
    }
+
+   public static void getFilesetMethod(){
+      /*public void addConfigured(FileSet files){
+         Iterator<FileResource> iterator = files.iterator();
+         while(iterator.hasNext()){
+            File next = iterator.next().getFile();
+            LOGGER.out(next.getAbsolutePath());   
+         }
+      }*/
+   }
 }
