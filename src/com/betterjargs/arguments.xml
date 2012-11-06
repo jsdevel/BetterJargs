@@ -43,4 +43,10 @@ limitations under the License.
       description="The directory to output the built files." 
       overwrite="true"
       type="directory"/>    
+
+   <argument 
+      name="--debug" 
+      description="Turns on debugging mode when XforJ is run." 
+      type="boolean"/>    
+
 </arguments>

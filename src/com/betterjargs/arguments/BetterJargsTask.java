@@ -10,10 +10,14 @@ public class BetterJargsTask extends Task {
    private File outputdirectory=null;
    @Override
    public void execute() throws BuildException {
-      com.betterjargs.BetterJargs.buildArguments(new BetterJargsArguments(
-         inputxml,
-         outputdirectory
-      ));
+      try {
+         com.betterjargs.BetterJargs.buildArguments(new BetterJargsArguments(
+            inputxml,
+            outputdirectory
+         ));
+      } catch (Exception exc) {
+         throw new BuildException(exc.getMessage());
+      }
    }
 
    public void setInputxml(File inputxml){

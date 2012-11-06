@@ -35,7 +35,7 @@ public class AntTaskBuilder {
       CodeFormatter output = new CodeFormatter(indent);
       ImportOutput importOutput = new ImportOutput();
       CodeFormatter privateFieldOutput = new CodeFormatter(indent).addIndent(1);
-      CodeFormatter paramsOutput = new CodeFormatter(indent).addIndent(3);
+      CodeFormatter paramsOutput = new CodeFormatter(indent).addIndent(4);
       CodeFormatter setterOutput = new CodeFormatter(indent).addIndent(1);
 
 
@@ -49,9 +49,13 @@ public class AntTaskBuilder {
             add(privateFieldOutput).
             addLine("@Override").
             addLine("public void execute() throws BuildException {").addIndent().
-               addLine(arguments.getAntCallback()+"(new "+arguments.getArgumentsClassName()+"(").
-                  add(paramsOutput).
-               addLine("));").
+               addLine("try {").addIndent().
+                  addLine(arguments.getAntCallback()+"(new "+arguments.getArgumentsClassName()+"(").
+                     add(paramsOutput).
+                  addLine("));").removeIndent().
+               addLine("} catch (Exception exc) {").addIndent().
+                  addLine("throw new BuildException(exc.getMessage());").removeIndent().
+               addLine("}").
             removeIndent().
             addLine("}").removeIndent().
             addLine().
