@@ -38,16 +38,28 @@ public class BetterJargs {
     */
    public static void main(String[] args) {
       try {
-         BetterJargsTerminal validatedArgs = new BetterJargsTerminal(args);
+         BetterJargsArguments validatedArgs = BetterJargsTerminal.getArguments(args);
 
          ArgumentsElement arguments = getArgumentsElement(validatedArgs.getInputxml());
+
+         String outputDir = validatedArgs.getOutputdirectory().getAbsolutePath() + "/";
 
          if(arguments.getTerminal()) {
             Object result = TerminalClassBuilder.buildTerminalArguments(arguments);
 
-            MainUtil.putString(new File(validatedArgs.getOutputdirectory().getAbsolutePath() + "/" + arguments.getClassName() + "Terminal.java"), result.toString());
+            MainUtil.putString(
+               new File(outputDir + arguments.getTerminalClassName() + ".java"), 
+               result.toString()
+            );
          }
-         MainUtil.putString(new File(validatedArgs.getOutputdirectory().getAbsolutePath() + "/" + arguments.getClassName() + "Help.java"), HelpClassBuilder.buildHelpClass(arguments).toString());
+         MainUtil.putString(
+            new File(outputDir + arguments.getHelpClassName() + ".java"), 
+            HelpClassBuilder.buildHelpClass(arguments).toString()
+         );
+         MainUtil.putString(
+            new File(outputDir + arguments.getArgumentsClassName() + ".java"), 
+            ArgumentsClassBuilder.buildArgumentsFile(arguments).toString()
+         );
 
       } catch(Exception exc) {
          out("\n");
@@ -95,7 +107,7 @@ public class BetterJargs {
       CodeFormatter out = new CodeFormatter(indent).addIndent(amount);
 
       out.
-      addLine("private String getPath(String path){").
+      addLine("public static final String getPath(String path){").
       addIndent().
       addLine("String pathToUse;").
       addLine("if(path.startsWith(\"/\")){").
@@ -114,7 +126,7 @@ public class BetterJargs {
    public static CodeFormatter getGetBooleanMethod(String indent, int amount){
       CodeFormatter out = new CodeFormatter(indent).addIndent(amount);
 
-      out.addLine("public final boolean getBoolean(String bool){").addIndent().
+      out.addLine("public static final boolean getBoolean(String bool){").addIndent().
          addLine("if(bool != null){").addIndent().
             addLine("String s = bool.toLowerCase();").
             addLine("if(\"true\".equals(bool) || \"yes\".equals(bool) || \"1\".equals(bool)){").addIndent().

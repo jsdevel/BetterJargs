@@ -140,4 +140,18 @@ public class ArgumentsElement extends Element {
       arguments.add(argument);
    }
    public boolean hasArguments(){return arguments.size() > 0;}
+
+   //ClassNames
+   public String getTerminalClassName(){
+      return className+"Terminal";
+   }
+   public String getHelpClassName(){
+      return className+"Help";
+   }
+   public String getAntClassName(){
+      return className+"Task";
+   }
+   public String getArgumentsClassName(){
+      return className+"Arguments";
+   }
 }

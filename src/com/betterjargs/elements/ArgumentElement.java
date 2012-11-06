@@ -54,6 +54,10 @@ public class ArgumentElement extends Element {
                      if(getBoolean(defaultVal)){
                         defaultValue = "true";
                      }
+                     break;
+                  default:
+                     defaultValue = "null";
+                     break;
                   }
                }
             }
@@ -83,7 +87,7 @@ public class ArgumentElement extends Element {
    public void setType(String type) throws Exception {
       dup(this.type);
       empty(type);
-      this.type=type.toLowerCase();
+      this.type=type.toLowerCase().replaceAll("\\s+", "");
       this.fieldType=convertType(type);
    }
    public String getType(){return type;}

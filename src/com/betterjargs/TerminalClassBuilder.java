@@ -32,20 +32,19 @@ public class TerminalClassBuilder {
 
    public static Object buildTerminalArguments(ArgumentsElement arguments){
       String indent = arguments.getIndent();
-      String className = arguments.getClassName()+"Terminal";
+      String className = arguments.getTerminalClassName();
 
       BetterJargs.out("Building "+className+".java");
 
       CodeFormatter output = new CodeFormatter(indent);
       ImportOutput importOutput = new ImportOutput();
       CodeFormatter privateFieldOutput = new CodeFormatter(indent).addIndent(1);
+      CodeFormatter variableOutput = new CodeFormatter(indent).addIndent(2);
       CodeFormatter testOutput = new CodeFormatter(indent).addIndent(3);
-      CodeFormatter verifyOutput = new CodeFormatter(indent).addIndent(4);
+      CodeFormatter argumentsConstructorParamsOutput = new CodeFormatter(indent).addIndent(4);
       CodeFormatter getterOutput = new CodeFormatter(indent).addIndent(1);
 
-      if(!"".equals(arguments.getPackageName())){
-         output.add("package ").add(arguments.getPackageName()).add(";\n\n");
-      }
+      FileBuilderUtilities.buildPackage(output, arguments);
 
       output.
          add(importOutput).
@@ -54,9 +53,9 @@ public class TerminalClassBuilder {
             add(privateFieldOutput).
             addLine().
             addIndent().
-            addLine("public "+className+"(String[] args) throws IllegalArgumentException {").
+            addLine("public static "+arguments.getArgumentsClassName()+" getArguments(String[] args) throws IllegalArgumentException {").
             addIndent().
-               addLine("super();").
+               add(variableOutput).
                addLine("if(__showHelpOnNoArgs && args.length == 0){").addIndent().
                   addLine("System.out.print("+arguments.getClassName()+"Help.getHelpMenu());").
                   addLine("System.exit(0);").removeIndent().
@@ -75,7 +74,9 @@ public class TerminalClassBuilder {
                   addLine("throw new IllegalArgumentException(\"An even number of arguments must be given.\");").
                removeIndent().
                addLine("}").
-               add(verifyOutput).
+               addLine("return new "+arguments.getArgumentsClassName()+"(").addIndent().
+                  add(argumentsConstructorParamsOutput).
+               addLine(");").
                removeIndent().
             addLine("}").
             add(getterOutput).
@@ -85,33 +86,26 @@ public class TerminalClassBuilder {
          addLine("}");
 
       if(arguments.getHelp()){
-         privateFieldOutput.addLine("private boolean __showHelpOnNoArgs=true;");
+         privateFieldOutput.addLine("private static final boolean __showHelpOnNoArgs=true;");
       } else {
-         privateFieldOutput.addLine("private boolean __showHelpOnNoArgs;");
+         privateFieldOutput.addLine("private static final boolean __showHelpOnNoArgs;");
       }
 
       Iterator<ArgumentElement> args = arguments.getArgumentIterator();
       while(args.hasNext()){
          ArgumentElement arg = args.next();
-         String fieldType = arg.getFieldType();
-         String name = arg.getFieldName();
 
-         buildField(privateFieldOutput, fieldType, name, arg);
-         buildFieldTest(testOutput, arg);
-         buildImport(importOutput, arg);
-         buildGetMethod(getterOutput, fieldType, name);
-         buildRequiredFieldValidation(verifyOutput, arg);
+         FileBuilderUtilities.buildImport(importOutput, arg);
+         FileBuilderUtilities.buildVariable(variableOutput, arg, "", ";");
+         buildAssignment(testOutput, arg);
+         buildConstructorParam(argumentsConstructorParamsOutput, arg, args.hasNext() ? "," : "");
       }
       return output;
 
    }
 
-   public static void buildField(CodeFormatter out, String type, String name, ArgumentElement arg){
-         String defaultValue = arg.hasDefault() ? "=" + arg.getDefault() : "" ;
-         out.addLine("private "+type+" "+name+ defaultValue+ ";");
-   }
 
-   public static void buildFieldTest(CodeFormatter out, ArgumentElement arg){
+   public static void buildAssignment(CodeFormatter out, ArgumentElement arg){
       String fieldType = arg.getFieldType();
       String fieldName = arg.getFieldName();
 
@@ -123,23 +117,6 @@ public class TerminalClassBuilder {
             out.
                addLine("String newPath = getPath(val);").
                addLine(fieldName+" = new "+fieldType+"(newPath);");
-               if("directory".equals(arg.getType())){
-                  out.
-                  addLine("if(!"+fieldName+".isDirectory()) {").
-                  addIndent().
-                  addLine("throw new IllegalArgumentException(\"Directory doesn't exist :'\"+val+\"'.  Given by argument '\"+key+\"'.\");").
-                  removeIndent().
-                  addLine("}");
-
-               }
-               if(arg.getOverwrite()){
-                  out.
-                  addLine("if("+fieldName+".exists() && !"+fieldName+".canWrite()) {").
-                  addIndent().
-                     addLine("throw new IllegalArgumentException(\"The following file may not be overwritten to: '\"+"+fieldName+"+\"'.\");").
-                  removeIndent().
-                  addLine("}");
-               }
             break;
          case "boolean":
             out.addLine(fieldName+" = getBoolean(val);");
@@ -150,36 +127,11 @@ public class TerminalClassBuilder {
          removeIndent().
          addLine("}");
    }
-
-
-   public static void buildGetMethod(CodeFormatter out, String type, String name){
-      String firstChar = Character.toString(name.charAt(0));
-      out.
-         addLine("public "+type+" get"+name.replaceFirst(firstChar, firstChar.toUpperCase())+"(){").addIndent().
-            addLine("return "+name+";").removeIndent().
-         addLine("}");
-   }
-   public static void buildImport(ImportOutput out, ArgumentElement arg){
-      switch(arg.getType()){
-      case "boolean":
-      case "int":
-      case "integer":
-         return;
-      }
-      out.add(arg.getFieldType());
-   }
-   public static void buildRequiredFieldValidation(CodeFormatter out, ArgumentElement arg){
-      if(arg.getRequired()){
-         String fieldName = arg.getFieldName();
-         String name = arg.getName();
-         out.
-         addLine("if("+fieldName+"==null) {").addIndent().
-         addLine("throw new IllegalArgumentException(\"The following argument is required: '"+name+"'.\");").removeIndent().
-         addLine("}");
-      }
+   public static void buildConstructorParam(CodeFormatter out, ArgumentElement arg, String seperator){
+      String fieldName = arg.getFieldName();
+      out.addLine(fieldName + seperator);
    }
 
-   public static void buildLoop(Output loopOutput, String indent, Output testOutput, Output verifyOutput){
 
-   }
+
 }

@@ -29,7 +29,7 @@ public class HelpClassBuilder {
       CodeFormatter out = new CodeFormatter(args.getIndent());
       CodeFormatter menu = new CodeFormatter(args.getIndent());
       int maxlength = args.getMenuLength();
-      String className = args.getClassName() + "Help";
+      String className = args.getHelpClassName();
       BetterJargs.out("Building "+className+".java");
 
       if(args.hasPackage()) {
@@ -149,40 +149,5 @@ public class HelpClassBuilder {
          copy.add("\\n\\n");
 
       }
-
-      /*for(String paragraph: paragraphs) {
-         if(maxlength > 0 && paragraph.length() > maxlength) {
-            String[] words = paragraph.replaceAll("^\\s+|\\s+$", "").split("\\s+");
-
-            int proposedLength = 0;
-
-            for(int i = 0; i < words.length; i++) {
-               String word = words[i];
-               int wordLength = word.length();
-               int allowed = maxlength - proposedLength;
-
-               if(wordLength > allowed || wordLength > allowed + 1) {
-                  copy.doIndent(word);
-                  proposedLength = wordLength;
-               } else {
-                     copy.add(" ");
-                     proposedLength += 1;
-                  copy.add(word);
-                  proposedLength += wordLength;
-               }
-            }
-         } else {
-            copy.doIndent(paragraph);
-         }
-         copy.add("\\n\\n");
-      }*/
-   }
-
-   private static String getPadding(int spaces) {
-      StringBuilder padding = new StringBuilder();
-      for(int i = 0; i < spaces; i++) {
-         padding.append(" ");
-      }
-      return padding.toString();
    }
 }
