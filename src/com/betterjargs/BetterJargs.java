@@ -38,8 +38,14 @@ public class BetterJargs {
     */
    public static void main(String[] args) {
       try {
-         BetterJargsArguments validatedArgs = BetterJargsTerminal.getArguments(args);
+         buildArguments(BetterJargsTerminal.getArguments(args));
+      } catch (Exception exc){
 
+      }
+   }
+
+   public static void buildArguments(BetterJargsArguments validatedArgs){
+      try {
          ArgumentsElement arguments = getArgumentsElement(validatedArgs.getInputxml());
 
          String outputDir = validatedArgs.getOutputdirectory().getAbsolutePath() + "/";
@@ -49,6 +55,13 @@ public class BetterJargs {
 
             MainUtil.putString(
                new File(outputDir + arguments.getTerminalClassName() + ".java"), 
+               result.toString()
+            );
+         }
+         if(arguments.hasAntCallback()){
+            Object result = AntTaskBuilder.buildAntTask(arguments);
+            MainUtil.putString(
+               new File(outputDir + arguments.getAntClassName() + ".java"), 
                result.toString()
             );
          }

@@ -30,6 +30,7 @@ limitations under the License.
    package="com.betterjargs.arguments" 
    title="BetterJargs"
    terminal="true"
+   antcallback="com.betterjargs.BetterJargs.buildArguments"
 >
    <argument 
       name="--input-xml" 

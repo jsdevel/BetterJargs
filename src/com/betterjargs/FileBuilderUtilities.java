@@ -33,6 +33,15 @@ public class FileBuilderUtilities {
          addLine("}");
    }
 
+   public static void buildSetMethod(CodeFormatter out, ArgumentElement arg){
+      String name = arg.getFieldName();
+      String firstChar = Character.toString(name.charAt(0));
+      out.
+         addLine("public void set"+name.replaceFirst(firstChar, firstChar.toUpperCase())+"("+arg.getFieldType() + " " + name + "){").addIndent().
+            addLine("this."+name+"="+name+";").removeIndent().
+         addLine("}");
+   }
+
    public static void buildField(CodeFormatter out, ArgumentElement arg){
          buildVariable(out, arg, "private ", ";");
    }

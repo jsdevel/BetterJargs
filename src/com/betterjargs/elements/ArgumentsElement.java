@@ -24,6 +24,7 @@ import java.util.Iterator;
  * @author Joseph Spencer
  */
 public class ArgumentsElement extends Element {
+   private String antCallback;
    private String className;
    private String copyright;
    private String description;
@@ -37,6 +38,15 @@ public class ArgumentsElement extends Element {
    private String title;
 
    private ArrayList<ArgumentElement> arguments = new ArrayList();
+
+   //ANTCALLBACK
+   public void setAntCallback(String callback) throws Exception {
+      dup(antCallback);
+      empty(callback);
+      antCallback=callback;
+   }
+   public String getAntCallback(){return antCallback;}
+   public boolean hasAntCallback(){return antCallback != null;}
 
 
    //CLASS

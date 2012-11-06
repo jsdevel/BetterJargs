@@ -71,6 +71,9 @@ public class ArgumentsAction extends XMLEventAction {
    @Override
    public void handleAttribute(String name, String value) throws Exception {
       switch(name) {
+      case "antcallback":
+         arguments.setAntCallback(value);
+         break;
       case "class":
          arguments.setClass(value);
          break;

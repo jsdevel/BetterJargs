@@ -42,7 +42,7 @@ public class ImportOutput extends Output {
       return this;
    }
 
-   private static Map<String, String> importTable = new HashMap<String, String>();
+   private static final Map<String, String> importTable = new HashMap<>();
    static {
       importTable.put("File", "java.io.File");
    }
