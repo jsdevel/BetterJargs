@@ -16,12 +16,11 @@
 
 package com.betterjargs.actions;
 
-import com.betterjargs.elements.ArgumentsElement;
+import com.betterjargs.BetterJargs;
 import com.betterjargs.elements.ArgumentElement;
-import com.betterjargs.*;
-import java.util.*;
-import java.util.Iterator;
-import javax.xml.stream.events.*;
+import com.betterjargs.elements.ArgumentsElement;
+import javax.xml.stream.events.XMLEvent;
+
 
 /**
  *
@@ -46,11 +45,9 @@ public class ArgumentsAction extends XMLEventAction {
       if(!programStarted){
          programStarted=true;
 
-
          handleAttributes(event);
 
          return this;
-
       }
       ArgumentElement argument = new ArgumentElement();
       arguments.addArgument(argument);

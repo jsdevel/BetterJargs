@@ -16,9 +16,9 @@
 
 package com.betterjargs.actions;
 
+import com.betterjargs.BetterJargs;
 import com.betterjargs.elements.ArgumentElement;
-import com.betterjargs.*;
-import javax.xml.stream.events.*;
+import javax.xml.stream.events.XMLEvent;
 
 /**
  *
@@ -52,14 +52,14 @@ public class ArgumentAction extends XMLEventAction {
    @Override
    public void handleAttribute(String name, String value) throws Exception {
       switch(name) {
-      case "name":
-         element.setName(value);
-         break;
       case "default":
          element.setDefault(value);
          break;
       case "description":
          element.setDescription(value);
+         break;
+      case "name":
+         element.setName(value);
          break;
       case "overwrite":
          element.setOverwrite(value);

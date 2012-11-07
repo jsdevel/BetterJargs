@@ -34,8 +34,8 @@ public class BetterJargsTerminal {
       return new BetterJargsArguments(
             inputxml,
             outputdirectory
-         );
-      }
+      );
+   }
    public static final String getPath(String path){
       String pathToUse;
       if(path.startsWith("/")){
@@ -54,4 +54,4 @@ public class BetterJargsTerminal {
       }
       return false;
    }
-   }
+}
