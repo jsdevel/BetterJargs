@@ -45,5 +45,6 @@ public class ImportOutput extends Output {
    private static final Map<String, String> importTable = new HashMap<>();
    static {
       importTable.put("File", "java.io.File");
+      importTable.put("List<File>", "java.util.List");
    }
 }
