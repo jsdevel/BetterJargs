@@ -16,32 +16,24 @@
 
 package com.betterjargs.elements;
 
-import com.betterjargs.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Joseph Spencer
  */
-public class ArgumentElement extends Element {
-
-   private String name;
+public class NestedElement extends Element {
    private String defaultValue;
-   private String description="";
-   private String type;
    private String fieldName;
    private String fieldType;
+   private boolean isAntTask;
+   private String name;
    private boolean overwrite;
    private boolean required;
+   protected String type;
 
-   public void setName(String name) throws Exception {
-      dup(this.name);
-      empty(name);
-      uniqueName(name);
-      this.name=name;
-      this.fieldName = name.toLowerCase().replaceAll("[^a-z]", "");
-   }
-   public String getName(){return name;}
+   private static boolean hasFilesType;
 
    public void setDefault(final String defaultVal) throws Exception {
       if(defaultVal != null){
@@ -67,11 +59,22 @@ public class ArgumentElement extends Element {
    public String getDefault(){return defaultValue;}
    public boolean hasDefault(){return defaultValue != null;}
 
-   public void setDescription(String description) throws Exception {
-      empty(description);
-      this.description=description;
+   public void setIsAntTask(boolean isAntTask) {
+      if(!this.isAntTask){
+         this.isAntTask=isAntTask;
+      }
    }
-   public String getDescription(){return description;}
+   public boolean getIsAntTask(){return isAntTask;}
+
+   public final void setName(String name) throws Exception {
+      dup(this.name);
+      empty(name);
+      uniqueName(name);
+      this.name=name;
+      this.fieldName = name.toLowerCase().replaceAll("[^a-z]", "");
+   }
+   public final String getName(){return name;}
+   public final boolean hasName(){return name!=null;}
 
    public void setOverwrite(String type) throws Exception {
       this.overwrite=getBoolean(type);
@@ -83,15 +86,22 @@ public class ArgumentElement extends Element {
    }
    public boolean getRequired(){return required;}
 
-
-   public void setType(String type) throws Exception {
+   public final void setType(String type) throws Exception {
+      if("files".equals(type)){
+         if(hasFilesType){
+            throw new IllegalArgumentException("The files type may not be used more than once.");
+         }
+         hasFilesType = true;
+      }
       dup(this.type);
       empty(type);
       this.type=type.toLowerCase().replaceAll("\\s+", "");
       this.fieldType=convertType(type);
    }
-   public String getType(){return type;}
+   public final String getType(){return type;}
+   public final boolean hasType(){return type!=null;}
 
-   public String getFieldName(){return fieldName;}
-   public String getFieldType(){return fieldType;}
+   public final String getFieldName(){return fieldName;}
+   public final String getFieldType(){return fieldType;}
+
 }

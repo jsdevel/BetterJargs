@@ -79,7 +79,7 @@ public class HelpClassBuilder {
       }
 
 
-      if(args.hasArguments()) {
+      if(args.hasElements()) {
          CodeFormatter required = new CodeFormatter(args.getIndent()).addIndent(1);
          CodeFormatter optional = new CodeFormatter(args.getIndent()).addIndent(1);
          boolean requiredHeaderSet=false;
@@ -88,9 +88,9 @@ public class HelpClassBuilder {
          menu.
          add("ARGUMENTS\\n").add(required).add(optional);
 
-         Iterator<ArgumentElement> elements = args.getArgumentIterator();
+         Iterator<NestedElement> elements = args.getElements();
          while(elements.hasNext()) {
-            ArgumentElement next = elements.next();
+            NestedElement next = elements.next();
             String description = next.getDescription();
             String name = next.getName();
             CodeFormatter formatterToUse;
@@ -110,6 +110,9 @@ public class HelpClassBuilder {
             }
 
             formatterToUse.doIndent(name+"\\n").addIndent(1);
+            if(next.getIsAntTask()){
+               formatterToUse.doIndent("[AS NESTED ANT TASK]\\n");
+            }
 
             formatParagraph(description, formatterToUse, maxlength);
             formatterToUse.removeIndent();

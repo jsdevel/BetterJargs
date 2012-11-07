@@ -16,29 +16,22 @@
 
 package com.betterjargs.actions;
 
-import com.betterjargs.BetterJargs;
+import com.betterjargs.*;
 import com.betterjargs.elements.*;
-import javax.xml.stream.events.XMLEvent;
+import com.betterjargs.elements.NestedElement;
+import javax.xml.stream.events.*;
 
 /**
  *
  * @author Joseph Spencer
  */
-public class ArgumentAction extends XMLEventAction {
-   private boolean isOpen;
+public class AntTaskAction extends XMLEventAction {
    private NestedElement element;
-   public ArgumentAction(XMLEventAction previous, NestedElement element) {
-      super(previous, "argument");
-      this.element = element;
-   }
-
-   @Override
-   public void close(XMLEvent event) throws Exception {
-      if(!element.hasName() || !element.hasType()){
-         throw new IllegalArgumentException("argument elements need both a type and a name.");
-      }
-      element.flushQueuedAttributes();
-      //BetterJargs.out("Closing Argument");
+   private boolean isOpen;
+   public AntTaskAction(XMLEventAction previous, NestedElement element) {
+      super(previous, "anttask");
+      this.element=element;
+      element.setIsAntTask(true);
    }
 
    @Override
@@ -53,30 +46,33 @@ public class ArgumentAction extends XMLEventAction {
    }
 
    @Override
-   public void handleAttribute(String name, String value) throws Exception {
+   protected void handleAttribute(String name, String value) throws Exception {
       switch(name) {
-      case "default":
-         element.setDefault(value);
-         break;
       case "description":
          element.setDescription(value);
          break;
       case "name":
          element.setName(value);
          break;
-      case "overwrite":
-         element.setOverwrite(value);
-         break;
-      case "required":
-         element.setRequired(value);
-         break;
       case "type":
-         element.setType(value);
+         switch(value){
+         case "files":
+            element.setType(value);
+            break;
+         }
          break;
       default:
          BetterJargs.out("Ignoring unknown attribute '"+name+"' on argument.");
          break;
       }
+   }
+
+   @Override
+   public void close(XMLEvent event) throws Exception {
+      if(!element.hasName() || !element.hasType()){
+         throw new IllegalArgumentException("anttask elements need both a type and a name.");
+      }
+      //BetterJargs.out("Closing AntTaskAction");
    }
 
 }

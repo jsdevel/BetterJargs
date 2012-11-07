@@ -44,6 +44,7 @@ public class AntTaskBuilder {
 
       output.
          add(importOutput).
+         addLine().
          addLine("public class "+arguments.getAntClassName()+" extends Task {").addIndent().
             addLine().
             add(privateFieldOutput).
@@ -62,15 +63,25 @@ public class AntTaskBuilder {
             add(setterOutput).
          addLine("}");
 
-      Iterator<ArgumentElement> args = arguments.getArgumentIterator();
+      importOutput.
+         add("java.util.ArrayList").
+         add("java.util.Iterator").
+         add("org.apache.tools.ant.types.FileSet").
+         add("org.apache.tools.ant.types.resources.FileResource");
+
+      Iterator<NestedElement> args = arguments.getElements();
       while(args.hasNext()){
-         ArgumentElement arg = args.next();
+         NestedElement arg = args.next();
          String fieldName = arg.getFieldName();
 
          FileBuilderUtilities.buildField(privateFieldOutput, arg);
          FileBuilderUtilities.buildImport(importOutput, arg);
          paramsOutput.addLine(fieldName + (args.hasNext() ? "," : ""));
-         FileBuilderUtilities.buildSetMethod(setterOutput, arg);
+         if(arg.getIsAntTask()){
+            buildAddConfiguredMethod(setterOutput, fieldName);
+         } else {
+            FileBuilderUtilities.buildSetMethod(setterOutput, arg);
+         }
       }
 
 
@@ -78,13 +89,17 @@ public class AntTaskBuilder {
       return output;
    }
 
-   public static void getFilesetMethod(){
-      /*public void addConfigured(FileSet files){
-         Iterator<FileResource> iterator = files.iterator();
-         while(iterator.hasNext()){
-            File next = iterator.next().getFile();
-            LOGGER.out(next.getAbsolutePath());   
-         }
-      }*/
+   public static void buildAddConfiguredMethod(CodeFormatter out, String fieldName){
+         out.
+         addLine("public void addConfigured(FileSet files){").addIndent().
+            addLine("Iterator<FileResource> iterator = files.iterator();").
+            addLine("while(iterator.hasNext()){").addIndent().
+               addLine("if("+fieldName+"==null){").addIndent().
+                  addLine(fieldName+"= new ArrayList<File>();").removeIndent().
+               addLine("}").
+               addLine("File next = iterator.next().getFile();").
+               addLine(fieldName+".add(next);").removeIndent().
+            addLine("}").removeIndent().
+         addLine("}");
    }
 }

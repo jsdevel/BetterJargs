@@ -24,7 +24,7 @@ import com.betterjargs.output.*;
  * @author Joseph Spencer
  */
 public class FileBuilderUtilities {
-   public static void buildGetMethod(CodeFormatter out, ArgumentElement arg){
+   public static void buildGetMethod(CodeFormatter out, NestedElement arg){
       String name = arg.getFieldName();
       String firstChar = Character.toString(name.charAt(0));
       out.
@@ -32,8 +32,18 @@ public class FileBuilderUtilities {
             addLine("return "+name+";").removeIndent().
          addLine("}");
    }
+   public static void buildHasMethod(CodeFormatter out, NestedElement arg){
+      String name = arg.getFieldName();
+      String type = arg.getFieldType();
+      String test = "boolean".equals(type) ? name : name+"!=null";
 
-   public static void buildSetMethod(CodeFormatter out, ArgumentElement arg){
+      String firstChar = Character.toString(name.charAt(0));
+      out.
+         addLine("public boolean has"+name.replaceFirst(firstChar, firstChar.toUpperCase())+"(){").addIndent().
+            addLine("return "+test+";").removeIndent().
+         addLine("}");
+   }
+   public static void buildSetMethod(CodeFormatter out, NestedElement arg){
       String name = arg.getFieldName();
       String firstChar = Character.toString(name.charAt(0));
       out.
@@ -42,18 +52,18 @@ public class FileBuilderUtilities {
          addLine("}");
    }
 
-   public static void buildField(CodeFormatter out, ArgumentElement arg){
+   public static void buildField(CodeFormatter out, NestedElement arg){
          buildVariable(out, arg, "private ", ";");
    }
 
-   public static void buildParam(CodeFormatter out, ArgumentElement arg, String modifier, String closer){
+   public static void buildParam(CodeFormatter out, NestedElement arg, String modifier, String closer){
       String mod = modifier == null ? "" : modifier;
       String close = closer == null ? "" : closer;
 
       out.addLine(mod + arg.getFieldType() + " " + arg.getFieldName() + close);
    }
 
-   public static void buildVariable(CodeFormatter out, ArgumentElement arg, String modifier, String closer){
+   public static void buildVariable(CodeFormatter out, NestedElement arg, String modifier, String closer){
          String defaultValue;
          if(arg.getDefault() != null){
             defaultValue = "="+arg.getDefault();
@@ -70,7 +80,7 @@ public class FileBuilderUtilities {
          buildParam(out, arg, modifier, defaultValue + closer);
    }
 
-   public static void buildImport(ImportOutput out, ArgumentElement arg){
+   public static void buildImport(ImportOutput out, NestedElement arg){
       switch(arg.getType()){
       case "boolean":
       case "int":
@@ -86,7 +96,7 @@ public class FileBuilderUtilities {
       }
    }
 
-   public static void buildRequiredFieldValidation(CodeFormatter out, ArgumentElement arg){
+   public static void buildRequiredFieldValidation(CodeFormatter out, NestedElement arg){
       if(arg.getRequired()){
          String fieldName = arg.getFieldName();
          String name = arg.getName();

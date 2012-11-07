@@ -25,9 +25,9 @@ import java.util.Iterator;
  */
 public class ArgumentsElement extends Element {
    private String antCallback;
+   private boolean hasAntTasks;
    private String className;
    private String copyright;
-   private String description;
    private String example;
    private boolean help=true;
    private String indent;
@@ -37,7 +37,7 @@ public class ArgumentsElement extends Element {
    private boolean terminal;
    private String title;
 
-   private ArrayList<ArgumentElement> arguments = new ArrayList();
+   private ArrayList<NestedElement> elements = new ArrayList();
 
    //ANTCALLBACK
    public void setAntCallback(String callback) throws Exception {
@@ -48,6 +48,14 @@ public class ArgumentsElement extends Element {
    public String getAntCallback(){return antCallback;}
    public boolean hasAntCallback(){return antCallback != null;}
 
+   //HASANTTASKS
+   public void setHasAntTasks(String flag) throws Exception {
+      empty(flag);
+      if(!hasAntTasks){
+         hasAntTasks=getBoolean(flag);
+      }
+   }
+   public boolean hasAntTasks(){return hasAntTasks;}
 
    //CLASS
    public void setClass(String name) throws Exception {
@@ -67,16 +75,7 @@ public class ArgumentsElement extends Element {
    public String getCopyright(){return copyright;}
    public boolean hasCopyright(){return copyright != null;}
 
-   //DESCRIPTION
-   public void setDescription(String description) throws Exception {
-      dup(this.description);
-      empty(description);
-      this.description=description;
-   }
-   public String getDescription(){return description;}
-   public boolean hasDescription(){return description!=null;}
-
-   //DESCRIPTION
+   //EXAMPLE
    public void setExample(String example) throws Exception {
       dup(this.example);
       empty(example);
@@ -109,7 +108,6 @@ public class ArgumentsElement extends Element {
    }
    public String getLicense(){return license;}
    public boolean hasLicense(){return license!=null;}
-
 
    //MENULENGTH
    public void setMenuLength(String menuLength) throws Exception {
@@ -144,12 +142,12 @@ public class ArgumentsElement extends Element {
    public String getTitle(){return title;}
    public boolean hasTitle(){return title!=null;}
 
-   //ARGUMENTS
-   public Iterator<ArgumentElement> getArgumentIterator(){return arguments.iterator();}
-   public void addArgument(ArgumentElement argument){
-      arguments.add(argument);
+   //ELEMENTS
+   public Iterator<NestedElement> getElements(){return elements.iterator();}
+   public void addElement(NestedElement element){
+      elements.add(element);
    }
-   public boolean hasArguments(){return arguments.size() > 0;}
+   public boolean hasElements(){return elements.size() > 0;}
 
    //ClassNames
    public String getTerminalClassName(){

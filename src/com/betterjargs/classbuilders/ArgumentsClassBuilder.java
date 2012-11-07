@@ -17,8 +17,7 @@
 package com.betterjargs.classbuilders;
 
 import com.betterjargs.BetterJargs;
-import com.betterjargs.elements.ArgumentElement;
-import com.betterjargs.elements.ArgumentsElement;
+import com.betterjargs.elements.*;
 import com.betterjargs.output.*;
 import java.util.Iterator;
 
@@ -61,9 +60,10 @@ public class ArgumentsClassBuilder {
          addLine("}");
 
 
-      Iterator<ArgumentElement> arguments = args.getArgumentIterator();
+      //build regular properties first
+      Iterator<NestedElement> arguments = args.getElements();
       while(arguments.hasNext()){
-         ArgumentElement arg = arguments.next();
+         NestedElement arg = arguments.next();
          String fieldName = arg.getFieldName();
 
          FileBuilderUtilities.buildField(privateFieldOutput, arg);
@@ -71,15 +71,15 @@ public class ArgumentsClassBuilder {
          FileBuilderUtilities.buildParam(paramOutput, arg, "final ", arguments.hasNext()?",":"");
          buildArgTest(testOutput, arg);
          FileBuilderUtilities.buildGetMethod(getterOutput, arg);
+         FileBuilderUtilities.buildHasMethod(getterOutput, arg);
          FileBuilderUtilities.buildRequiredFieldValidation(verifyRequiredOutput, arg);
          assignmentOutput.addLine("this."+fieldName+"="+fieldName+";");
       }
 
-
       return output.toString();
    }   
 
-   public static void buildArgTest(CodeFormatter out, ArgumentElement arg){
+   public static void buildArgTest(CodeFormatter out, NestedElement arg){
       String fieldName = arg.getFieldName();
 
       switch(arg.getType()){

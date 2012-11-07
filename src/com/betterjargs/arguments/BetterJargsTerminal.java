@@ -1,13 +1,14 @@
 package com.betterjargs.arguments;
 
 import java.io.File;
-
+import java.util.List;
 public class BetterJargsTerminal {
    private static final boolean __showHelpOnNoArgs=true;
 
    public static BetterJargsArguments getArguments(String[] args) throws IllegalArgumentException {
       File inputxml=null;
       File outputdirectory=null;
+      List<File> inputfiles=null;
       if(__showHelpOnNoArgs && args.length == 0){
          System.out.print(BetterJargsHelp.getHelpMenu());
          System.exit(0);
@@ -27,13 +28,15 @@ public class BetterJargsTerminal {
             outputdirectory = new File(newPath);
             continue;
          }
+         throw new IllegalArgumentException("Unknown argument: "+key);
       }
       if(i - len != 0){
          throw new IllegalArgumentException("An even number of arguments must be given.");
       }
       return new BetterJargsArguments(
             inputxml,
-            outputdirectory
+            outputdirectory,
+            inputfiles
       );
    }
    public static final String getPath(String path){

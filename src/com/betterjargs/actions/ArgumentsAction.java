@@ -17,8 +17,7 @@
 package com.betterjargs.actions;
 
 import com.betterjargs.BetterJargs;
-import com.betterjargs.elements.ArgumentElement;
-import com.betterjargs.elements.ArgumentsElement;
+import com.betterjargs.elements.*;
 import javax.xml.stream.events.XMLEvent;
 
 
@@ -49,18 +48,33 @@ public class ArgumentsAction extends XMLEventAction {
 
          return this;
       }
-      ArgumentElement argument = new ArgumentElement();
-      arguments.addArgument(argument);
+      XMLEventAction newAction;
+      String newElementLocalName = event.asStartElement().getName().getLocalPart();
+      NestedElement element = new NestedElement();
+      switch(newElementLocalName){
+      case "argument":
+         newAction = new ArgumentAction(this, element);
+         break;
+      case "anttask":
+         newAction = new AntTaskAction(this, element);
+         break;
+      default:
+         throw new Exception("Invalid element found in arguments: "+newElementLocalName);
+      }
 
-      ArgumentAction newAction = new ArgumentAction(this, argument);
-
+      arguments.addElement(element);
       return newAction.handleElement(event);
    }
 
    @Override
    public void close(XMLEvent event) throws Exception {
-      if(arguments.getClassName() == null){
+      if(!arguments.hasClassName()){
          throw new Exception("You must provide a class name via the 'class' attribute on the arguments element.");
+      }
+      if(
+         arguments.hasAntTasks() && !arguments.hasAntCallback()
+      ){
+         throw new Exception("You must provide a callback when defining ant tasks.");
       }
       //BetterJargs.out("Closing Arguments.");
    }

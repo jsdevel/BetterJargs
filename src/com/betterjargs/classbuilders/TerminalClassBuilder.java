@@ -17,11 +17,10 @@
 package com.betterjargs.classbuilders;
 
 import com.betterjargs.BetterJargs;
+import com.betterjargs.elements.*;
 import com.betterjargs.output.CodeFormatter;
 import com.betterjargs.output.ImportOutput;
 import com.betterjargs.output.Output;
-import com.betterjargs.elements.ArgumentsElement;
-import com.betterjargs.elements.ArgumentElement;
 import java.util.Iterator;
 
 
@@ -68,6 +67,7 @@ public class TerminalClassBuilder {
                   addLine("String key = args[i];").
                   addLine("String val = args[i+1];").
                add(testOutput).
+                  addLine("throw new IllegalArgumentException(\"Unknown argument: \"+key);").
                removeIndent().
                addLine("}").
                addLine("if(i - len != 0){").
@@ -92,13 +92,15 @@ public class TerminalClassBuilder {
          privateFieldOutput.addLine("private static final boolean __showHelpOnNoArgs;");
       }
 
-      Iterator<ArgumentElement> args = arguments.getArgumentIterator();
+      Iterator<NestedElement> args = arguments.getElements();
       while(args.hasNext()){
-         ArgumentElement arg = args.next();
+         NestedElement arg = args.next();
 
          FileBuilderUtilities.buildImport(importOutput, arg);
          FileBuilderUtilities.buildVariable(variableOutput, arg, "", ";");
-         buildAssignment(testOutput, arg);
+         if(!arg.getIsAntTask()){
+            buildAssignment(testOutput, arg);
+         }
          buildConstructorParam(argumentsConstructorParamsOutput, arg, args.hasNext() ? "," : "");
       }
       return output;
@@ -106,7 +108,7 @@ public class TerminalClassBuilder {
    }
 
 
-   public static void buildAssignment(CodeFormatter out, ArgumentElement arg){
+   public static void buildAssignment(CodeFormatter out, NestedElement arg){
       String fieldType = arg.getFieldType();
       String fieldName = arg.getFieldName();
 
@@ -131,7 +133,7 @@ public class TerminalClassBuilder {
          removeIndent().
          addLine("}");
    }
-   public static void buildConstructorParam(CodeFormatter out, ArgumentElement arg, String seperator){
+   public static void buildConstructorParam(CodeFormatter out, NestedElement arg, String seperator){
       String fieldName = arg.getFieldName();
       out.addLine(fieldName + seperator);
    }

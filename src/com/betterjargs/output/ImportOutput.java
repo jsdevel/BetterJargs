@@ -37,7 +37,7 @@ public class ImportOutput extends Output {
             path=importTable.get(type);
          }
 
-         items.add("import "+path+";\n\n");
+         items.add("import "+path+";\n");
       }
       return this;
    }

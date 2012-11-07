@@ -26,8 +26,19 @@ import java.util.Set;
  * @author Joseph Spencer
  */
 public abstract class Element {
+   private String description;
    private static Set<String> definedNames = new HashSet(Arrays.asList(new String[]{}));
    private ArrayList<QueuedAttribute> queuedAttributes = new ArrayList();
+
+
+   //DESCRIPTION
+   public final void setDescription(String description) throws Exception {
+      dup(this.description);
+      empty(description);
+      this.description=description;
+   }
+   public final String getDescription(){return description;}
+   public final boolean hasDescription(){return description!=null;}
 
    public void addQueuedAttribute(QueuedAttribute queued){
       queuedAttributes.add(queued);
