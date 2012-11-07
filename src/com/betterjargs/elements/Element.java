@@ -80,6 +80,8 @@ public abstract class Element {
       case "directory":
       case "file":
          return "File";
+      case "files":
+         return "List<File>";
       }
       return type;
    }
