@@ -44,10 +44,4 @@ limitations under the License.
       overwrite="true"
       type="directory"/>    
 
-   <anttask
-      description="Accepts the input arguments.xml files." 
-      name="inputfiles"
-      type="files"
-      />
-
 </arguments>
