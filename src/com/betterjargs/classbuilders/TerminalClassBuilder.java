@@ -75,7 +75,7 @@ public class TerminalClassBuilder {
                   addLine("throw new IllegalArgumentException(\"An even number of arguments must be given.\");").
                removeIndent().
                addLine("}").
-               addLine("return new "+arguments.getArgumentsClassName()+"(").addIndent().
+               addLine("return new "+arguments.getArgumentsClassName()+"(").
                   add(argumentsConstructorParamsOutput).
                addLine(");").
                removeIndent().
@@ -121,6 +121,9 @@ public class TerminalClassBuilder {
             break;
          case "boolean":
             out.addLine(fieldName+" = getBoolean(val);");
+            break;
+         case "files":
+            out.addLine("System.out.println(\"Ignoring '"+fieldName+"'.  It is only supported when using ant.\");");
             break;
          }
 
