@@ -29,7 +29,7 @@ public class ArgumentsAction extends XMLEventAction {
    private ArgumentsElement arguments;
 
    public ArgumentsAction(XMLEventAction previous, ArgumentsElement arguments) {
-      super(previous, "arguments");
+      super(previous);
       this.arguments=arguments;
       //programOutput=output;
    }
@@ -54,6 +54,9 @@ public class ArgumentsAction extends XMLEventAction {
       switch(newElementLocalName){
       case "argument":
          newAction = new ArgumentAction(this, element);
+         break;
+      case "antproperty":
+         newAction = new AntPropertyAction(this, element);
          break;
       case "anttask":
          newAction = new AntTaskAction(this, element);

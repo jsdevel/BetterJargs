@@ -98,7 +98,7 @@ public class TerminalClassBuilder {
 
          FileBuilderUtilities.buildImport(importOutput, arg);
          FileBuilderUtilities.buildVariable(variableOutput, arg, "", ";");
-         if(!arg.getIsAntTask()){
+         if(!arg.getIsAntTask() && !arg.getIsAntProperty()){
             buildAssignment(testOutput, arg);
          }
          buildConstructorParam(argumentsConstructorParamsOutput, arg, args.hasNext() ? "," : "");

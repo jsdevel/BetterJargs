@@ -28,7 +28,7 @@ public class ArgumentAction extends XMLEventAction {
    private boolean isOpen;
    private NestedElement element;
    public ArgumentAction(XMLEventAction previous, NestedElement element) {
-      super(previous, "argument");
+      super(previous);
       this.element = element;
    }
 

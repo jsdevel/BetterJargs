@@ -26,16 +26,14 @@ import javax.xml.stream.events.*;
  */
 public abstract class XMLEventAction {
    protected final XMLEventAction previousStrategy;
-   protected final String localName;
    protected String indent="    ";
 
    //For Attributes
    private String[] init = {};
    private Set<String> handledAttributes = new HashSet<>(Arrays.asList(init));
 
-   public XMLEventAction(XMLEventAction previous, String localName){
+   public XMLEventAction(XMLEventAction previous){
       this.previousStrategy=previous;
-      this.localName=localName;
    }
 
    public abstract XMLEventAction handleElement(XMLEvent event) throws Exception;

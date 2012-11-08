@@ -27,6 +27,7 @@ public class NestedElement extends Element {
    private String defaultValue;
    private String fieldName;
    private String fieldType;
+   private boolean isAntProperty;
    private boolean isAntTask;
    private String name;
    private boolean overwrite;
@@ -65,6 +66,13 @@ public class NestedElement extends Element {
       }
    }
    public boolean getIsAntTask(){return isAntTask;}
+
+   public void setIsAntProperty(boolean isAntProperty) {
+      if(!this.isAntProperty){
+         this.isAntProperty=isAntProperty;
+      }
+   }
+   public boolean getIsAntProperty(){return isAntProperty;}
 
    public final void setName(String name) throws Exception {
       dup(this.name);

@@ -29,7 +29,7 @@ public class AntTaskAction extends XMLEventAction {
    private NestedElement element;
    private boolean isOpen;
    public AntTaskAction(XMLEventAction previous, NestedElement element) {
-      super(previous, "anttask");
+      super(previous);
       this.element=element;
       element.setIsAntTask(true);
    }

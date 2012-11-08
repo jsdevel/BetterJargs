@@ -111,7 +111,9 @@ public class HelpClassBuilder {
 
             formatterToUse.doIndent(name+"\\n").addIndent(1);
             if(next.getIsAntTask()){
-               formatterToUse.doIndent("[AS NESTED ANT TASK]\\n");
+               formatterToUse.doIndent("[NESTED ANT TASK]\\n");
+            } else if(next.getIsAntProperty()){
+               formatterToUse.doIndent("[ANT PROPERTY]\\n");
             }
 
             formatParagraph(description, formatterToUse, maxlength);
