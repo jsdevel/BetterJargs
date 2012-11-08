@@ -53,7 +53,7 @@ public class TerminalClassBuilder {
             add(privateFieldOutput).
             addLine().
             addIndent().
-            addLine("public static "+arguments.getArgumentsClassName()+" getArguments(String[] args) throws IllegalArgumentException {").
+            addLine("public static "+arguments.getArgumentsClassName()+" getArguments(String[] args) throws Throwable {").
             addIndent().
                add(variableOutput).
                addLine("if(__showHelpOnNoArgs && args.length == 0){").addIndent().

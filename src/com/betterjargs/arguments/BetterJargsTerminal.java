@@ -4,7 +4,7 @@ import java.io.File;
 public class BetterJargsTerminal {
    private static final boolean __showHelpOnNoArgs=true;
 
-   public static BetterJargsArguments getArguments(String[] args) throws IllegalArgumentException {
+   public static BetterJargsArguments getArguments(String[] args) throws Throwable {
       File inputxml=null;
       File outputdirectory=null;
       if(__showHelpOnNoArgs && args.length == 0){

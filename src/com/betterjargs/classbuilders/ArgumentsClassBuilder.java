@@ -49,7 +49,7 @@ public class ArgumentsClassBuilder {
             addLine().
             addLine("public "+args.getArgumentsClassName()+"(").
                add(paramOutput).
-            addLine("){").addIndent().
+            addLine(") throws Throwable {").addIndent().
                add(testOutput).
                add(verifyRequiredOutput).
                add(assignmentOutput).
@@ -84,16 +84,17 @@ public class ArgumentsClassBuilder {
 
       switch(arg.getType()){
       case "directory":
-      case "file":
-         if("directory".equals(arg.getType())){
-            out.
-            addLine("if("+fieldName+" != null && !"+fieldName+".isDirectory()) {").
-            addIndent().
-            addLine("throw new IllegalArgumentException(\"Directory doesn't exist :'\"+"+fieldName+"+\"'.  Given by argument '"+fieldName+"'.\");").
-            removeIndent().
+         out.
+            addLine("if("+fieldName+" != null){").addIndent().
+               addLine("if(!"+fieldName+".exists() || !"+fieldName+".isDirectory()){").addIndent().
+                  addLine(fieldName+".mkdirs();").removeIndent().
+               addLine("}").
+               addLine("if(!("+fieldName+".exists() && "+fieldName+".isDirectory())){").addIndent().
+                  addLine("throw new IllegalArgumentException(\"Directory doesn't exist :'\"+"+fieldName+"+\"'.  Given by argument '"+fieldName+"'.\");").removeIndent().
+               addLine("}").removeIndent().
             addLine("}");
-
-         }
+         break;
+      case "file":
          if(arg.getOverwrite()){
             out.
             addLine("if("+fieldName+"!=null && "+fieldName+".exists() && !"+fieldName+".canWrite()) {").

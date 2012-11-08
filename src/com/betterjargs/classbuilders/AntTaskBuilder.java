@@ -54,7 +54,7 @@ public class AntTaskBuilder {
                   addLine(arguments.getAntCallback()+"(new "+arguments.getArgumentsClassName()+"(").
                      add(paramsOutput).
                   addLine("));").removeIndent().
-               addLine("} catch (Exception exc) {").addIndent().
+               addLine("} catch (Throwable exc) {").addIndent().
                   addLine("throw new BuildException(exc.getMessage());").removeIndent().
                addLine("}").
             removeIndent().

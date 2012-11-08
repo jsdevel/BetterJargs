@@ -44,7 +44,7 @@ public class BetterJargs {
       try {
          BetterJargsArguments arguments = BetterJargsTerminal.getArguments(args);
          buildArguments(arguments);
-      } catch (Exception exc){
+      } catch (Throwable exc){
          out("The following error occurred: "+exc.getMessage());
       }
    }

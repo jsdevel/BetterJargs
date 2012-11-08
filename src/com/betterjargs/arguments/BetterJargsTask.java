@@ -18,7 +18,7 @@ public class BetterJargsTask extends Task {
             inputxml,
             outputdirectory
          ));
-      } catch (Exception exc) {
+      } catch (Throwable exc) {
          throw new BuildException(exc.getMessage());
       }
    }
