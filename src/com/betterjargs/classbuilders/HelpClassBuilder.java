@@ -124,10 +124,24 @@ public class HelpClassBuilder {
       return out;
    }
 
+   private static String bulletRegex = "^\\s*+\\*\\).*+";
    private static void formatParagraph(String input, CodeFormatter copy, int maxlength) {
       String[] paragraphs = input.split("\\\\n");
 
       for(String paragraphString: paragraphs){
+
+         if(paragraphString.matches("^\\s*+\\*\\).*+")){
+            String newLine = paragraphString.
+                  replaceAll("\\s++", " ").
+                  replaceAll("&amp;", "&").
+                  replaceAll("&lt;", "<").
+                  replaceAll("&gt;", ">").
+                  replaceAll("^\\s+|\\s$","");
+            newLine = newLine.replaceFirst("\\*\\)\\s*+", "*) ");
+            copy.addIndent().doIndent(newLine).add("\\n").removeIndent();
+            continue;
+         }
+
          ArrayList<String> words = new ArrayList(
             Arrays.asList(paragraphString.replaceAll("^\\s+|\\s$","").replaceAll("\\r?\\n|\\s+", " ").split("\\s"))
          );
