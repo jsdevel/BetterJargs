@@ -42,9 +42,10 @@ public class BetterJargs {
     */
    public static void main(String[] args) {
       try {
-         buildArguments(BetterJargsTerminal.getArguments(args));
+         BetterJargsArguments arguments = BetterJargsTerminal.getArguments(args);
+         buildArguments(arguments);
       } catch (Exception exc){
-
+         out("The following error occurred: "+exc.getMessage());
       }
    }
 
