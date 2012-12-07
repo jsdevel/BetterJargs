@@ -91,7 +91,6 @@ public class HelpClassBuilder {
          Iterator<NestedElement> elements = args.getElements();
          while(elements.hasNext()) {
             NestedElement next = elements.next();
-            String description = next.getDescription();
             String name = next.getName();
             CodeFormatter formatterToUse;
 
@@ -116,8 +115,10 @@ public class HelpClassBuilder {
                formatterToUse.doIndent("[ANT PROPERTY]\\n");
             }
 
-            formatParagraph(description, formatterToUse, maxlength);
-            formatterToUse.removeIndent();
+            if(next.hasDescription()){
+               formatParagraph(next.getDescription(), formatterToUse, maxlength);
+               formatterToUse.removeIndent();
+            }
          }
       }
 
@@ -126,6 +127,9 @@ public class HelpClassBuilder {
 
    private static String bulletRegex = "^\\s*+\\*\\).*+";
    private static void formatParagraph(String input, CodeFormatter copy, int maxlength) {
+      if(input == null){
+         throw new IllegalArgumentException("Can't format paragraph.  input is null");
+      }
       String[] paragraphs = input.split("\\\\n");
 
       for(String paragraphString: paragraphs){
