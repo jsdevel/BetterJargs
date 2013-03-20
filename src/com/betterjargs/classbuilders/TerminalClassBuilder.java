@@ -48,7 +48,7 @@ public class TerminalClassBuilder {
 
       output.
          add(importOutput).
-         
+
          addLine("public class "+className+" {").
             add(privateFieldOutput).
             addLine().
@@ -115,6 +115,10 @@ public class TerminalClassBuilder {
       out.addLine("if(\""+arg.getName()+"\".equals(key)){").
                addIndent();
          switch(arg.getType()){
+         case "string":
+            out.
+               addLine(fieldName+" = val;");
+            break;
          case "directory":
          case "file":
             out.
