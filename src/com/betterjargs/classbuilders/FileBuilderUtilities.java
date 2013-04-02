@@ -33,13 +33,23 @@ public class FileBuilderUtilities {
          addLine("}");
    }
    public static void buildHasMethod(CodeFormatter out, NestedElement arg){
-      String name = arg.getFieldName();
+      String fieldName = arg.getFieldName();
       String type = arg.getFieldType();
-      String test = "boolean".equals(type) ? name : name+"!=null";
+      String test;
+      switch(type){
+      case "boolean":
+         test=fieldName;
+         break;
+      case "int":
+         test=fieldName + "!=0";
+         break;
+      default:
+         test = fieldName+"!=null";
+      }
 
-      String firstChar = Character.toString(name.charAt(0));
+      String firstChar = Character.toString(fieldName.charAt(0));
       out.
-         addLine("public boolean has"+name.replaceFirst(firstChar, firstChar.toUpperCase())+"(){").addIndent().
+         addLine("public boolean has"+fieldName.replaceFirst(firstChar, firstChar.toUpperCase())+"(){").addIndent().
             addLine("return "+test+";").removeIndent().
          addLine("}");
    }
@@ -64,20 +74,25 @@ public class FileBuilderUtilities {
    }
 
    public static void buildVariable(CodeFormatter out, NestedElement arg, String modifier, String closer){
-         String defaultValue;
-         if(arg.getDefault() != null){
-            defaultValue = "="+arg.getDefault();
-         } else {
-            switch(arg.getType()){
-            case "boolean":
-               defaultValue = "=false";
-               break;
-            default:
-               defaultValue = "=null";
-               break;
-            }
+      String type = arg.getType();
+      String argDefault = arg.getDefault();
+      String defaultValue;
+      if(argDefault != null){
+         defaultValue = "="+arg.getDefault();
+      } else {
+         switch(type){
+         case "int":
+            defaultValue = "=0";
+            break;
+         case "boolean":
+            defaultValue = "=false";
+            break;
+         default:
+            defaultValue = "=null";
+            break;
          }
-         buildParam(out, arg, modifier, defaultValue + closer);
+      }
+      buildParam(out, arg, modifier, defaultValue + closer);
    }
 
    public static void buildImport(ImportOutput out, NestedElement arg){
@@ -142,4 +157,17 @@ public class FileBuilderUtilities {
       addLine("}");
       return out;
    }
+
+   public static CodeFormatter getGetIntMethod(String indent, int amount){
+      CodeFormatter out = new CodeFormatter(indent).addIndent(amount);
+
+      out.addLine("public static final int getInt(String in){").addIndent().
+         addLine("if(in != null && !in.isEmpty()){").addIndent().
+            addLine("return Integer.parseInt(in);").removeIndent().
+         addLine("}").
+         addLine("return 0;").removeIndent().
+      addLine("}");
+      return out;
+   }
+
 }

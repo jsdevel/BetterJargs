@@ -81,6 +81,18 @@ public abstract class Element {
       return false;
    }
 
+   public final boolean getInt(String in){
+      if(in == null || in.isEmpty()){
+         return false;
+      }
+      try {
+         Integer.parseInt(in);
+      } catch(NumberFormatException e){
+         System.out.println("SEVERE: Couldn't parse as int: "+in);
+      }
+      return true;
+   }
+
    public final String convertType(String type){
       String acceptableType = type.toLowerCase();
       switch(acceptableType){

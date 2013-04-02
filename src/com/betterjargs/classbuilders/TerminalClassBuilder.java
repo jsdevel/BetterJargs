@@ -83,6 +83,7 @@ public class TerminalClassBuilder {
             add(getterOutput).
             add(FileBuilderUtilities.getPathMethod(indent, 1)).
             add(FileBuilderUtilities.getGetBooleanMethod(indent, 1)).
+            add(FileBuilderUtilities.getGetIntMethod(indent, 1)).
             removeIndent().
          addLine("}");
 
@@ -127,6 +128,9 @@ public class TerminalClassBuilder {
             break;
          case "boolean":
             out.addLine(fieldName+" = getBoolean(val);");
+            break;
+         case "int":
+            out.addLine(fieldName+" = getInt(val);");
             break;
          case "files":
             out.addLine("System.out.println(\"Ignoring '"+fieldName+"'.  It is only supported when using ant.\");");

@@ -48,6 +48,12 @@ public class NestedElement extends Element {
                         defaultValue = "true";
                      }
                      break;
+                  case "int":
+                     if(getInt(defaultVal)){
+                        defaultValue = defaultVal;
+                     }
+                     break;
+
                   default:
                      defaultValue = "null";
                      break;
