@@ -47,17 +47,22 @@ public class NestedElement extends Element {
                      if(getBoolean(defaultVal)){
                         defaultValue = "true";
                      }
-                     break;
+                     return;
                   case "int":
                      if(getInt(defaultVal)){
                         defaultValue = defaultVal;
                      }
-                     break;
-
-                  default:
-                     defaultValue = "null";
-                     break;
+                     return;
+                  case "string":
+                     if(!defaultVal.trim().isEmpty()){
+                        defaultValue = '"'+defaultVal.
+                           replace("\\", "\\\\").
+                           replace("\n", "\\\n").
+                           replace("\"", "\\\"")+'"';
+                     }
+                     return;
                   }
+                  defaultValue = "null";
                }
             }
          });
